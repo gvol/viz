@@ -1,0 +1,13 @@
+# configuration variables with default values, 
+# .gaprc is a good place to override these values 
+
+# <#GAPDoc Label="PDF_VIEWER">
+# <ManSection>
+# <Var Name="PDF_VIEWER"/>
+# <Description>
+# External executable for a PDF viewer needed for online drawing (splashing).
+# </Description>
+# </ManSection>
+# <#/GAPDoc>
+PDF_VIEWER := " evince "; # the current Gnome document viewer on desktop UNIX machines
+
