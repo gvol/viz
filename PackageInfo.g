@@ -63,7 +63,7 @@ PackageDoc := rec(
   HTMLStart := "doc/manual.htm",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "Splashing vizzing"
+  LongTitle := "Splashing vizzing",
   Autoload  := true
 ),
 
@@ -71,6 +71,7 @@ PackageDoc := rec(
 Dependencies := rec(
  GAP := ">=4.5",
  NeededOtherPackages := [["GAPDoc", ">= 1.2"],  #StringPrint
+                         ["orb", ">= 3.7"] #hashtable functionalities
                          ],
  SuggestedOtherPackages := [ ],
  ExternalConditions := [["Graphviz","http://www.graphviz.org/"]] #for creating PDF figures                      

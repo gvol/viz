@@ -7,6 +7,12 @@
 ## Current drawing implementation using GraphViz.  
 ##
 
+# returning true in case the name denotes a valid member of the record
+VIZ_ExistsFieldInRecord :=function(record, name)
+    return name in RecNames(record);
+end;
+
+
 # splash - immediate display
 InstallOtherMethod(Splash,
 "with no parameters",
@@ -24,11 +30,11 @@ InstallMethod(Splash,
 function(object, params)
 local dotname, pdfname;
   #if the filename is  not given we generate a random when 
-  if not ExistsFieldInRecord(params,"filename") then 
+  if not VIZ_ExistsFieldInRecord(params,"filename") then 
       params.filename := Filename(DirectoryTemporary(), "splash");
   fi;
   #if title is not given then simply "splash" is used
-  if not ExistsFieldInRecord(params,"title") then 
+  if not VIZ_ExistsFieldInRecord(params,"title") then 
       params.title := "splash";
   fi;
 
@@ -81,7 +87,8 @@ function(record,params)
 local recnames;
   recnames := RecNames(record);
   if AsSet(recnames) = AsSet([ "depth", "elems", "height", "rep" ]) then
-    _skeletonDrawClassAction(params.skeleton, record, params);
+    
+    #_skeletonDrawClassAction(params.skeleton, record, params);
   else
     Print("Nothing drawable here!\n");
   fi;
@@ -96,13 +103,13 @@ InstallMethod(Draw,
 function(ts,params)
 local t, n, i,label,filename,gens,edge,ht,currentlabel,entries, inputsymbols, states;
 
-  if ExistsFieldInRecord(params, "symbols") then
+  if VIZ_ExistsFieldInRecord(params, "symbols") then
     inputsymbols := params.symbols;
   else
     inputsymbols := INPUTSYMBOLS;
   fi;
 
-  if ExistsFieldInRecord(params, "states") then
+  if VIZ_ExistsFieldInRecord(params, "states") then
     states := params.states;
   else
     states := STATES;
