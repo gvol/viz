@@ -1,0 +1,2 @@
+DeclareGlobalFunction("Dot");
+DeclareGlobalFunction("Neato");
