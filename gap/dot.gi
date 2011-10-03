@@ -38,7 +38,8 @@ end);
 InstallGlobalFunction(Neato,
 function(g, file)
 local i, j, k, seen;
-  if IsBound(GAPInfo.PackagesInfo.grape) and IsGraph(g) then 
+  if IsBound(GAPInfo.PackagesInfo.grape) and IsBound(IsGraph) and IsGraph(g) 
+   then 
     g:=g.adjacencies;
   fi;
 
@@ -57,7 +58,7 @@ local i, j, k, seen;
   Exec("neato -x -Tpdf ", file, "> ", Concatenation(SplitString(file, ".")[1],
   ".pdf"));
   return true;
-end;
+end);
 
 #neato -x -Tpdf 7_825.dot > 7_825.pdf
 # makes the picture much nicer!

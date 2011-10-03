@@ -8,7 +8,7 @@ Version := "0.1",
 
 Date := "03/10/2011",
 
-ArchiveURL := "http://sgpdec.sf.net",
+ArchiveURL := "http://bitbucket.org/zen154115/viz",
 
 ArchiveFormats := ".tar.gz",
 
