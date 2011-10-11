@@ -22,11 +22,7 @@ local vertex;
   return filename;
 end;
 
-####TRANSFORMATION####################################################################
-InstallMethod(Draw,
-"for transformations",
-[IsTransformation, IsRecord],
-function(t,params)
+VIZ_drawFunctionalDigraph := function(t,params)
 local dgraph,i;
   #just creating a simple directed graph representation
   dgraph := [];
@@ -34,11 +30,45 @@ local dgraph,i;
     Add(dgraph, [i,i^t]);
   od; 
   return VIZ_drawDirectedGraph(params.filename,dgraph);  
+end;
+
+VIZ_drawMatrixDiagramForTransformations := function(t,params)
+local filename, l,i;
+  l := t![1];
+  filename := Concatenation(params.filename,".tex");
+  PrintTo(filename,"\\documentclass{article}\n\\usepackage{tikz}\n\\usetikzlibrary{automata,arrows,matrix,positioning}\n\\thispagestyle{empty}\n\\begin{document}\n\\tikzset{auto}\n\\begin{tikzpicture}\n\\tikzstyle{every state}=[minimum size=1pt,fill=black]\n");
+  AppendTo(filename,"\\node[state] (t1) {};\n");
+  for i in [2..Length(l)] do
+    AppendTo(filename,"\\node[state] (t",StringPrint(i),") [right of=t",StringPrint(i-1),"] {}\n;");
+  od;
+  AppendTo(filename,"\\node[state] (d1) [below of=t1]{};\n");
+  for i in [2..Length(l)] do
+    AppendTo(filename,"\\node[state] (d",StringPrint(i),") [right of=d",StringPrint(i-1),"] {}\n;");
+  od;
+  for i in [1..Length(l)] do
+    AppendTo(filename,"\\path (t",StringPrint(i),") edge (d",StringPrint(i^t),")\n;");
+  od;
+
+  AppendTo(filename,"\\end{tikzpicture}\n\\end{document}");  
+  return filename;
+end;
+
+####TRANSFORMATION####################################################################
+InstallMethod(Draw,
+"for transformations",
+[IsTransformation, IsRecord],
+function(t,params)
+  if VIZ_ExistsFieldInRecord(params, "mode") and params.mode="matrix" then
+    return VIZ_drawMatrixDiagramForTransformations(t,params);
+  else 
+    return VIZ_drawFunctionalDigraph(t,params);
+  fi;
 end
 );
 
 
 ####TRANSFORMATION SEMIGROUP##########################################################
+# simple Cayley graph for a transformation semigroup
 #accepted parameters "symbols" "states" 
 InstallMethod(Draw,
 "for transformation semigroups",
@@ -90,3 +120,4 @@ local t, n, i,label,filename,gens,edge,ht,currentlabel,entries, inputsymbols, st
   return filename;
 end
 );
+

@@ -29,7 +29,7 @@ function(object, params)
 local dotname, pdfname, extension, physicalfilename, strings;
   #if the filename is  not given we generate a random when 
   if not VIZ_ExistsFieldInRecord(params,"filename") then 
-      params.filename := Filename(DirectoryTemporary(), "splash");
+      params.filename := Filename(DirectoryCurrent(), "splash");
   fi;
   #if title is not given then simply "splash" is used
   if not VIZ_ExistsFieldInRecord(params,"title") then 
@@ -45,7 +45,11 @@ local dotname, pdfname, extension, physicalfilename, strings;
   if extension = "dot" then
     Exec(GRAPHVIZ ,physicalfilename, " > ", pdfname); #calling graphviz, this works only on UNIX machines
   elif extension = "tex" then
-    Exec(LATEX ,physicalfilename); #calling latex
+    #dir := NormalizedWhitespace(physicalfilename{[1..Maximum(Positions(physicalfilename,'/'))]}); #calling latex
+    #prevdir := 
+    Exec(LATEX , physicalfilename);
+#" --output-directory=\"",NormalizedWhitespace(physicalfilename{[1..Maximum(Positions(physicalfilename,'/'))]}),
+#         "\" ", physicalfilename); #calling latex
   fi;
   Exec(PDF_VIEWER, pdfname, " & ");                   
 end
