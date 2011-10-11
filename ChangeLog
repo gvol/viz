@@ -1,0 +1,4 @@
+0.1.1
+	Preparing Splash for accepting LaTeX output as well. Separating the ts drawing functions into drawts.g
+0.1
+	Initial upload, pieces of code from several sources.

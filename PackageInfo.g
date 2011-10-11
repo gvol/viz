@@ -4,9 +4,9 @@ PackageName := "viz",
 
 Subtitle := "viz",
 
-Version := "0.1",
+Version := "0.1.1",
 
-Date := "03/10/2011",
+Date := "11/10/2011",
 
 ArchiveURL := "http://bitbucket.org/zen154115/viz",
 
@@ -44,26 +44,26 @@ Persons := [
 
 Status := "dev",
 
-README_URL := "http://sgpdec.sf.net",
+README_URL := "http://bitbucket.org/zen154115/viz",
 
 PackageInfoURL := "http://sgpdec.sf.net",
 
 
 AbstractHTML := 
   "<span class=\"pkgname\">Viz</span> is  a <span class=\"pkgname\">GAP</span> package \
-   just splashing for vizzing.",
+   package for drawing GAP objects.",
 
 PackageWWWHome := "http://sgpdec.sf.net",
 
 PackageDoc := rec(
   BookName  := "Viz",
-  Archive :=  "http://sgpdec.sf.net",
+  Archive :=  "http://bitbucket.org/zen154115/viz",
 
   ArchiveURLSubset := ["htm"],
   HTMLStart := "doc/manual.htm",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "Splashing vizzing",
+  LongTitle := "Drawing GAP objects",
   Autoload  := true
 ),
 
@@ -74,7 +74,8 @@ Dependencies := rec(
                          ["orb", ">= 3.7"] #hashtable functionalities
                          ],
  SuggestedOtherPackages := [ ],
- ExternalConditions := [["Graphviz","http://www.graphviz.org/"]] #for creating PDF figures                      
+ ExternalConditions := [["Graphviz","http://www.graphviz.org/"],
+                    "LaTeX",""]] #for creating PDF figures                      
 ),
 
 AvailabilityTest := ReturnTrue,
