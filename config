@@ -11,3 +11,6 @@
 # <#/GAPDoc>
 PDF_VIEWER := " evince "; # the current Gnome document viewer on desktop UNIX machines
 
+GRAPHVIZ := " dot -Tpdf ";
+
+LATEX := " pdflatex ";

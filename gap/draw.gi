@@ -1,10 +1,8 @@
 #############################################################################
 ##
-## draw.gi           SgpDec package  
+## draw.gi           VIZ package  
 ##
-## (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
-##
-## Current drawing implementation using GraphViz.  
+## General framework for drawing.  
 ##
 
 # returning true in case the name denotes a valid member of the record
@@ -28,7 +26,7 @@ InstallMethod(Splash,
 "with parameters",
 [IsObject,IsRecord],
 function(object, params)
-local dotname, pdfname;
+local dotname, pdfname, extension, physicalfilename, strings;
   #if the filename is  not given we generate a random when 
   if not VIZ_ExistsFieldInRecord(params,"filename") then 
       params.filename := Filename(DirectoryTemporary(), "splash");
@@ -38,11 +36,17 @@ local dotname, pdfname;
       params.title := "splash";
   fi;
 
-  # the actual work is done by calling a Draw method
-  Draw(object,params);
-  dotname := Concatenation(params.filename, ".dot");
+  # the actual work is done by calling a Draw method, and the filename is returned
+  physicalfilename := Draw(object,params);
+  strings := SplitString(physicalfilename,".");
+  extension := strings[Length(strings)]; #getting the last one
   pdfname := Concatenation(params.filename, ".pdf");
-  Exec("dot -Tpdf ",dotname, " > ", pdfname); #calling graphviz, this works only on UNIX machines
+  #based on the extension we do different things
+  if extension = "dot" then
+    Exec(GRAPHVIZ ,physicalfilename, " > ", pdfname); #calling graphviz, this works only on UNIX machines
+  elif extension = "tex" then
+    Exec(LATEX ,physicalfilename); #calling latex
+  fi;
   Exec(PDF_VIEWER, pdfname, " & ");                   
 end
 );
@@ -62,6 +66,7 @@ local vertex;
   od; 
   
   AppendTo(filename,"}\n");
+  return filename;
 end;
 
 ####TRANSFORMATIONS##################################################################
@@ -74,7 +79,7 @@ local dgraph,i;
   for i in [1..DegreeOfTransformation(t)] do
     Add(dgraph, [i,i^t]);
   od; 
-  drawDirectedGraph(params.filename,dgraph);
+  return drawDirectedGraph(params.filename,dgraph);  
 end
 );
 
@@ -144,5 +149,6 @@ local t, n, i,label,filename,gens,edge,ht,currentlabel,entries, inputsymbols, st
         AppendTo(filename,Concatenation(edge , "[label=\"", HTValue(ht,edge) , "\"]\n"));
   od; 
   AppendTo(filename,"}\n");
+  return filename;
 end
 );
