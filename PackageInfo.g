@@ -75,7 +75,7 @@ Dependencies := rec(
                          ],
  SuggestedOtherPackages := [ ],
  ExternalConditions := [["Graphviz","http://www.graphviz.org/"],
-                    "LaTeX",""]] #for creating PDF figures                      
+                    ["LaTeX",""]], #for creating PDF figures                      
 ),
 
 AvailabilityTest := ReturnTrue,
