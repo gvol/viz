@@ -1,3 +1,5 @@
+0.1.2
+	Adding tikz-based transformation visualisation (dots and crossing lines by James East).
 0.1.1
 	Preparing Splash for accepting LaTeX output as well. Separating the ts drawing functions into drawts.g
 0.1

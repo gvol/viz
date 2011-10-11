@@ -4,7 +4,7 @@ PackageName := "viz",
 
 Subtitle := "viz",
 
-Version := "0.1.1",
+Version := "0.1.2",
 
 Date := "11/10/2011",
 
