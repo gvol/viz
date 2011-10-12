@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE Book SYSTEM "gapdoc.dtd">
+
+<Book Name="viz">
+
+<TitlePage>
+  <Title>The <Package>Viz</Package> Package</Title>
+
+  <Version>Version 0.1.x</Version>
+ 
+  <Author>Manuel Delgado <Email>mdelgado@fc.up.pt</Email></Author>
+  <Author>Attila Egri-Nagy <Email>attila@egri-nagy.hu</Email></Author>
+  <Author>J. D. Mitchell <Email>jdm3@st-and.ac.uk</Email></Author>
+  <Author>Markus Pfeiffer<Email>markusp@mcs.st-andrews.ac.uk</Email></Author>
+
+  <Copyright>&copyright; 2011 M. Delgado, A. Egri-Nagy, J. D. Mitchell, M. Pfeiffer.<P/></Copyright>
+
+  <Colophon>
+  This manual describes the &GAP; 4.5 package <Package>Viz</Package> version
+  0.1.x for visualising and creating publication quality diagrams of GAP objects.
+  </Colophon>
+
+  <Acknowledgements>
+
+    </Acknowledgements>
+</TitlePage>
+
+<TableOfContents/>
+
+<Body>
+  <Chapter Label="viz">
+  <Heading>The <Package>Viz</Package> package</Heading>
+  <Index><Package>Viz</Package> - Overview</Index>	
+  <Section><Heading>Overview and Introduction</Heading>
+    This is the manual for the <Package>Viz</Package> package version 0.1.x 
+  
+  </Section>
+
+  <Section Label="install">
+    <Heading>Installing <Package>Viz</Package></Heading>
+
+    In this section we give a brief description of how to start using  
+    <Package>Viz</Package>. If you have any problems getting
+    <Package>Viz</Package> working, then you could try emailling me at
+    <Email>jdm3@st-and.ac.uk</Email>. <P/>
+
+    It is assumed that you have a working copy of &GAP; with version number 
+    4.5 or higher. The most up-to-date version of &GAP; and instructions on
+    how to install it can be obtained from the main &GAP; webpage
+   <Alt    Only="LaTeX">\vspace{\baselineskip}</Alt><P/>
+       <Alt Only="LaTeX">\noindent\vspace{\baselineskip}</Alt>
+    <URL>http://www.gap-system.org</URL><P/>
+
+    <Alt Only="LaTeX">\noindent</Alt> The following is a summary of the steps 
+    that should lead to a successful
+    installation of <Package>Viz</Package>:
+
+    <List>
+    
+      <Item> download and install the <Package>Orb</Package> package version 
+      3.7 or higher. For more details go to:
+      <Alt    Only="LaTeX">\vspace{\baselineskip}</Alt><P/>
+          <Alt Only="LaTeX">\noindent\vspace{\baselineskip}</Alt><URL>http://www-groups.mcs.st-and.ac.uk/~neunhoef/Computer/Software/Gap/orb.html
+      </URL><P/>
+      <Alt Only="LaTeX">\noindent</Alt> Note that both <Package>Orb</Package>
+      and <Package>Viz</Package> are faster if <Package>Orb</Package>
+      is compiled. 
+      </Item>
+    
+      <Item> download the package archive <C>viz0r1.tar.gz</C> from
+      <Alt    Only="LaTeX">\vspace{\baselineskip}</Alt><P/>
+          <Alt Only="LaTeX">\noindent\vspace{\baselineskip}</Alt><URL>http://www-history.mcs.st-and.ac.uk/~jamesm/viz/index.html
+      </URL></Item>
+    
+      <Item> unzip and untar the file, this should create a directory called
+      <C>viz</C>.</Item>
+    
+      <Item> 
+      locate the <C>pkg</C> directory of your &GAP; directory, which contains
+      several other directories such as <C>lib</C>, <C>doc</C> and so on. Move 
+      the directory <C>viz</C> into the <C>pkg</C> directory.
+      </Item>
+    
+      <Item> start &GAP; in the usual way.</Item>
+    
+      <Item> type <C>LoadPackage("viz");</C></Item>
+      
+      <Item> compile the documentation by typing <C>VizMakeDoc()</C></Item>
+
+    </List>
+
+    Below is an example of an installation of <Package>Viz</Package> in a
+    UNIX environment where <C>GAPROOT</C>  should be substituted with the main 
+    &GAP; directory 
+    (the one containing the folders <C>bin</C>, <C>lib</C>, and so on) in
+    your installation of &GAP;.<P/>
+
+    <Log>
+> gunzip viz-0.1.x.tar.gz 
+> tar -xf viz0.1.x.tar 
+> mv viz GAPROOT/pkg
+> gap 
+
+[ ... ]
+
+gap> LoadPackage("viz");
+----------------------------------------------------------------------
+Loading  orb 3.7 (orb - Methods to enumerate orbits)
+by Juergen Mueller (http://www.math.rwth-aachen.de/~Juergen.Mueller),
+   Max Neunhoeffer (http://www-groups.mcs.st-and.ac.uk/~neunhoef), and
+   Felix Noeske (http://www.math.rwth-aachen.de/~Felix.Noeske).
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+Loading  Viz 0.1 (Viz - )
+by J. D. Mitchell (http://tinyurl.com/jdmitchell).
+----------------------------------------------------------------------
+true
+gap></Log>
+
+    Presuming that the above steps can be completed successfully you will be 
+    running the <Package>Viz</Package> package!<P/>
+
+
+  </Section>
+
+  <Section Label="doc"><Heading>Compiling the documentation</Heading>
+
+    To compile the documentation see <Ref Func="VizMakeDoc"/>. If you want
+    to use the help system it is essential that you compile the documentation. 
+  </Section>
+    
+  <Section Label="testing"><Heading>Testing the installation</Heading>
+
+
+  </Section>
+
+</Chapter>
+
+
+</Body>
+
+<Bibliography Databases="viz" />
+<TheIndex/>
+
+</Book>
+  

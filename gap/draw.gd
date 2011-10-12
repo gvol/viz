@@ -5,6 +5,8 @@
 ## Drawing GAP objects graphically. 
 ##
 
+DeclareGlobalFunction("VizMakeDoc");
+
 #############################################################################
 ## <#GAPDoc Label="Draw">
 ##  <ManSection><Heading>Drawing Objects</Heading>

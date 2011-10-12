@@ -10,6 +10,13 @@ VIZ_ExistsFieldInRecord :=function(record, name)
     return name in RecNames(record);
 end;
 
+InstallGlobalFunction(VizMakeDoc, 
+function()
+  MakeGAPDocDoc(Concatenation(PackageInfo("viz")[1]!.
+   InstallationPath, "/doc"), "viz.xml", 
+   [], "viz", "MathJax");;
+end);
+
 
 # splash - immediate display
 InstallOtherMethod(Splash,
