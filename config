@@ -13,4 +13,4 @@ PDF_VIEWER := " evince "; # the current Gnome document viewer on desktop UNIX ma
 
 GRAPHVIZ := " dot -Tpdf ";
 
-LATEX := " pdflatex ";
+LATEX := "pdflatex";
