@@ -33,9 +33,19 @@
   <Heading>The <Package>Viz</Package> package</Heading>
   <Index><Package>Viz</Package> - Overview</Index>	
   <Section><Heading>Overview and Introduction</Heading>
-    This is the manual for the <Package>Viz</Package> package version 0.1.x 
+  The <Package>Viz</Package> has two goals:
+    <List>
+    
+      <Item>Provide an immediate visualization of the mathematical objects involved in a calculation.</Item>
+    
+      <Item>Create publication quality diagrams.</Item>
+
+    </List>
   
   </Section>
+
+
+
 
   <Section Label="install">
     <Heading>Installing <Package>Viz</Package></Heading>
