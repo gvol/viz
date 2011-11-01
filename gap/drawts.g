@@ -36,7 +36,7 @@ VIZ_drawMatrixDiagramForTransformations := function(t,params)
 local filename, l,i;
   l := t![1];
   filename := Concatenation(params.filename,".tex");
-  PrintTo(filename,"\\documentclass{article}\n\\usepackage{tikz}\n\\usetikzlibrary{automata,arrows,matrix,positioning}\n\\thispagestyle{empty}\n\\begin{document}\n\\tikzset{auto}\n\\begin{tikzpicture}\n\\tikzstyle{every state}=[minimum size=1pt,fill=black]\n");
+  PrintTo(filename,"\\documentclass{minimal}\n\\usepackage{tikz}\n\\usetikzlibrary{automata,arrows,matrix,positioning}\n\\thispagestyle{empty}\n\\begin{document}\n\\tikzset{auto}\n\\begin{tikzpicture}\n\\tikzstyle{every state}=[minimum size=1pt,fill=black]\n");
   AppendTo(filename,"\\node[state] (t1) {};\n");
   for i in [2..Length(l)] do
     AppendTo(filename,"\\node[state] (t",StringPrint(i),") [right of=t",StringPrint(i-1),"] {}\n;");
