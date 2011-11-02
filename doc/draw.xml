@@ -13,7 +13,7 @@
  Other parameters may encode information on how to draw the graph for an object. These are specific to particular types and
  even for the same type there could be different drawing methods requiring extra parameters (e.g. giving symbols for states instead of integers).
  It is recommended to return the the name of the physical file (i.e. filename + extension) so <Ref Func="Splash"/> can 
- start to corresponding external application.
+ start to corresponding external application. 
   </Description>
  </ManSection>
  <#/GAPDoc>
@@ -33,3 +33,20 @@
  </ManSection>
  <#/GAPDoc>
 
+ <#GAPDoc Label="VizMakeDoc">
+  <ManSection><Heading>Compiling the documentation</Heading>
+  <Func Name="VizMakeDoc" Arg=""/>
+  <Description>
+  Compiles the documentation. 
+  </Description>
+ </ManSection>
+ <#/GAPDoc>
+
+ <#GAPDoc Label="VizLoadExtensions">
+  <ManSection><Heading>Loading extensions</Heading>
+  <Func Name="VizLoadExtensions" Arg=""/>
+  <Description>
+  Loads those drawing functions that depend on other packages. This is needed to avoid circular package dependencies.
+  </Description>
+ </ManSection>
+ <#/GAPDoc>

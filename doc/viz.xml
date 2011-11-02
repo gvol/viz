@@ -29,7 +29,7 @@
 <TableOfContents/>
 
 <Body>
-  <Chapter Label="viz">
+  <Chapter Label="intro">
   <Heading>The <Package>Viz</Package> package</Heading>
   <Index><Package>Viz</Package> - Overview</Index>	
   <Section><Heading>Overview and Introduction</Heading>
@@ -42,9 +42,7 @@
 
     </List>
 
-     <#Include Label="Draw"> 
-   <#Include Label="Splash"> 
-   <#Include Label="PDF_VIEWER"> 
+  The drawing is done by producing some text representation (GraphViz or LaTeX code) which is then processed by external tools.
   
   </Section>
 
@@ -142,16 +140,30 @@ gap></Log>
 
     To compile the documentation see <Ref Func="VizMakeDoc"/>. If you want
     to use the help system it is essential that you compile the documentation. 
+
+     <#Include Label="VizMakeDoc"> 
+
   </Section>
     
-  <Section Label="testing"><Heading>Testing the installation</Heading>
-
-
-  </Section>
 
 </Chapter>
 
+  <Chapter Label="Viz">
+  <Heading>The <Package>Viz</Package> package</Heading>
+  <Index><Package>Viz</Package> - Overview</Index>	
+  <Section><Heading>Generic Methods</Heading>
 
+     <#Include Label="Draw"> 
+   <#Include Label="Splash"> 
+
+     <#Include Label="VizLoadExtensions"> 
+  </Section>
+ <Section><Heading>Configuration Options</Heading>
+ The cingurable options can be set in <C>config</C> file in the main directory of the package.
+
+   <#Include Label="PDF_VIEWER"> 
+  </Section>
+</Chapter>
 </Body>
 
 <Bibliography Databases="viz" />
