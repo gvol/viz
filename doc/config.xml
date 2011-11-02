@@ -1,0 +1,8 @@
+ <#GAPDoc Label="PDF_VIEWER">
+ <ManSection>
+ <Var Name="PDF_VIEWER"/>
+ <Description>
+ External executable for a PDF viewer needed for online drawing (splashing).
+ </Description>
+ </ManSection>
+ <#/GAPDoc>

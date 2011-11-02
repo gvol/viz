@@ -41,6 +41,10 @@
       <Item>Create publication quality diagrams.</Item>
 
     </List>
+
+     <#Include Label="Draw"> 
+   <#Include Label="Splash"> 
+   <#Include Label="PDF_VIEWER"> 
   
   </Section>
 

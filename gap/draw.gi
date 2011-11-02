@@ -13,8 +13,7 @@ end;
 InstallGlobalFunction(VizMakeDoc, 
 function()
   MakeGAPDocDoc(Concatenation(PackageInfo("viz")[1]!.
-   InstallationPath, "/doc"), "viz.xml", 
-   [], "viz", "MathJax");;
+   InstallationPath, "/doc"), "viz.xml", ["draw.xml", "config.xml"], "viz", "MathJax");;
 end);
 
 InstallGlobalFunction(VizLoadExtensions,
