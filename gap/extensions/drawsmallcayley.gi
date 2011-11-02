@@ -4,7 +4,7 @@ LoadPackage("smallsemi");
 pair := function(x,y) return( [x,y] ); end;;
 
 Zip := function(a,b)
-    local res;
+    local res,i;
     if IsList(a) and IsList(b) then
         res := [];
         for i in [1..Minimum(Length(a), Length(b))] do
