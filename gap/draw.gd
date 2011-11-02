@@ -6,6 +6,7 @@
 ##
 
 DeclareGlobalFunction("VizMakeDoc");
+DeclareGlobalFunction("VizLoadExtensions");
 
 #############################################################################
 ## <#GAPDoc Label="Draw">

@@ -17,7 +17,10 @@ function()
    [], "viz", "MathJax");;
 end);
 
-
+InstallGlobalFunction(VizLoadExtensions,
+function()
+  Read(Concatenation(PackageInfo("viz")[1]!.InstallationPath,"/extensions.g")); end);
+        
 # splash - immediate display
 InstallOtherMethod(Splash,
 "with no parameters",
