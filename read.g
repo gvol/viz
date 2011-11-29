@@ -1,4 +1,7 @@
+
+
 ReadPackage("viz","/gap/draw.gi");
+ReadPackage("viz/gap/dot.gi");
 
 # permutations and permutation groups
 ReadPackage("Viz","/gap/drawgrp.g");

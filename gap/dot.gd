@@ -1,0 +1,5 @@
+
+
+
+DeclareGlobalFunction("DotPoset");
+DeclareGlobalFunction("NeatoGraph");

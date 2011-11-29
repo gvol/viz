@@ -1,2 +1,0 @@
-DeclareGlobalFunction("Dot");
-DeclareGlobalFunction("Neato");
