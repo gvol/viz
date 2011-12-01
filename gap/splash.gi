@@ -2,13 +2,8 @@
 ##
 ## draw.gi           VIZ package  
 ##
-## General framework for drawing.  
-##
 
-# returning true in case the name denotes a valid member of the record
-VIZ_ExistsFieldInRecord :=function(record, name)
-    return name in RecNames(record);
-end;
+# JDM move to utils.gi
 
 InstallGlobalFunction(VizMakeDoc, 
 function()
@@ -20,6 +15,8 @@ InstallGlobalFunction(VizLoadExtensions,
 function()
   Read(Concatenation(PackageInfo("viz")[1]!.InstallationPath,"/extensions.g")); end);
         
+
+# JDM move to splash.gi
 # splash - immediate display
 InstallOtherMethod(Splash,
 "with no parameters",
@@ -29,7 +26,6 @@ function(object)
 end
 );
 
-
 # splash - immediate display
 InstallMethod(Splash,
 "with parameters",
@@ -37,11 +33,11 @@ InstallMethod(Splash,
 function(object, params)
 local pdfname, extension, physicalfilename, strings,log;
   #if the filename is given we need to give a warning that it is ignored
-  if VIZ_ExistsFieldInRecord(params,"filename") then 
+  if "filename" in RecNames(params) then 
     Print("#W Parameter 'filename' is ignored for splashing.\n");
   fi;
   #if title is not given then simply "splash" is used
-  if not VIZ_ExistsFieldInRecord(params,"title") then 
+  if not "title" in RecNames(params) then 
       params.title := "splash";
   fi;
   #due to LaTeX's security feature it can only work in the current directory

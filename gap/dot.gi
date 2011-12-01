@@ -1,5 +1,90 @@
+# this file contains methods for producing strings that contain dot format
+# descriptions of various types of objects. 
+
+# please keep the file alphabetized.
 
 
+# Usage: a list of adjacencies of a directed graph (as pos. ints)
+# For example, [[1,2],[3],[4,5,6], [], [], []] indicates that
+# 1->1, 1->2, 2->3, 3->4, 3->5, 3->6. 
+
+# Returns: a string. 
+
+InstallGlobalFunction(DotDigraph, 
+function(digraph)
+  local str, str_i, i, j;
+
+  str:="";
+
+  Append(str,"digraph hgn{\n");
+  Append(str,"node [shape=circle]\n");
+
+  for i in [1..Length(digraph)] do
+    str_i:=String(i);
+    for j in [1..Length(digraph[i])] do 
+      Append(str, Concatenation(str_i, " -> ", String(j) , "\n"));
+    od;
+  od;
+  Append(str,"}\n");
+  return str;
+end);
+
+# Usage: a list of adjacencies of a functional directed graph (as pos. ints). 
+# For example, [1,2,3,3,4] indicates that 1->1, 2->2, 3->3, 4->3, 5->5. 
+
+# Returns: a string. 
+
+InstallGlobalFunction(DotFunctionalDigraph, 
+function(digraph)
+  local str, str_i, i;
+  
+  str:="";
+
+  Append(str,"digraph hgn{\n");
+  Append(str,"node [shape=circle]\n");
+
+  for i in [1..Length(digraph)] do
+    str_i:=String(i);
+    Append(str, Concatenation(String(i), " -> ", String(digraph[i]), "\n"));
+  od;
+  Append(str, "}\n");
+  return str;
+end);
+
+
+# Usage: a list of adjacencies of a graph (as pos. ints) or a Grape package
+# graph object
+
+# Returns: a string. 
+
+InstallGlobalFunction(DotGraph,
+function(g)
+  local str, seen, j, i, k;
+
+  if IsGraph(g) then 
+    g:=g.adjacencies;
+  fi;
+
+  str:="";
+
+  Append(str,  "graph {\n     node [shape=point]\n");
+  seen:=List([1..Length(g)], x-> []);
+
+  for i in [1..Length(g)] do 
+    if g[i]=[] then 
+      Append(str, Concatenation(String(i), "\n"));
+    else
+      j:=Difference(g[i], seen[i]);
+      for k in j do
+        Add(seen[k], i);
+        Append(str, Concatenation(String(i), " -- ", String(k), "\n"));
+      od;
+    fi;
+  od;
+
+  Append(str, " }");
+  return str;
+end);
 
 # Usage: poset[i] should be a list containing the maximal elements less than i.
 
@@ -31,32 +116,4 @@ function(poset)
   return str;
 end);
 
-InstallGlobalFunction(NeatoGraph,
-function(g, file)
-local i, j, k, seen;
-  if IsBound(GAPInfo.PackagesInfo.grape) and IsBound(IsGraph) and IsGraph(g) 
-   then 
-    g:=g.adjacencies;
-  fi;
-
-  PrintTo(file,  "graph {\n     node [shape=point]\n");
-  seen:=List([1..Length(g)], x-> []);
-
-  for i in [1..Length(g)] do 
-    j:=Difference(g[i], seen[i]);
-    for k in j do
-      Add(seen[k], i);
-      AppendTo(file, Concatenation(String(i), " -- ", String(k), "\n"));
-    od;
-  od;
-
-  AppendTo(file, " }");
-  Exec("neato -x -Tpdf ", file, "> ", Concatenation(SplitString(file, ".")[1],
-  ".pdf"));
-  return true;
-end);
-
-#neato -x -Tpdf 7_825.dot > 7_825.pdf
-# makes the picture much nicer!
-
-#dot -Tjpg cube3.dot > cube3.jpg
+#EOF

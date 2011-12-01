@@ -46,14 +46,14 @@ Status := "dev",
 
 README_URL := "http://bitbucket.org/zen154115/viz",
 
-PackageInfoURL := "http://sgpdec.sf.net",
+PackageInfoURL := "http://bitbucket.org/zen154115/viz/downloads",
 
 
 AbstractHTML := 
   "<span class=\"pkgname\">Viz</span> is  a <span class=\"pkgname\">GAP</span> package \
    package for drawing GAP objects.",
 
-PackageWWWHome := "http://sgpdec.sf.net",
+PackageWWWHome := "http://bitbucket.org/zen154115/viz/",
 
 PackageDoc := rec(
   BookName  := "Viz",
@@ -70,12 +70,9 @@ PackageDoc := rec(
 
 Dependencies := rec(
  GAP := ">=4.5",
- NeededOtherPackages := [["GAPDoc", ">= 1.2"],  #StringPrint
-                         ["orb", ">= 3.7"] #hashtable functionalities
-                         ],
+ NeededOtherPackages := [["GAPDoc", ">= 1.2"]],
  SuggestedOtherPackages := [ ],
- ExternalConditions := [["Graphviz","http://www.graphviz.org/"],
-                    ["LaTeX",""]], #for creating PDF figures                      
+ ExternalConditions := [], 
 ),
 
 AvailabilityTest := ReturnTrue,

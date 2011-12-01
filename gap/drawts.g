@@ -5,33 +5,6 @@
 ## Basic drawing for transformations and transformation semigroups
 ##
 
-#graphvizing a directed graph i.e. a list of pairs (needed for drawing transformations)
-VIZ_drawDirectedGraph := function(filename, graph)
-local vertex;
-
-  filename := Concatenation(filename,".dot");  
-  PrintTo(filename,"digraph hgn{\n");
-  AppendTo(filename,"node [shape=circle]\n");
-
-  #nodenames are created like n_#1_#2_...._#n  
-  for vertex in graph do
-    AppendTo(filename,Concatenation(StringPrint(vertex[1]), " -> " , StringPrint(vertex[2]) , "\n"));
-  od; 
-  
-  AppendTo(filename,"}\n");
-  return filename;
-end;
-
-VIZ_drawFunctionalDigraph := function(t,params)
-local dgraph,i;
-  #just creating a simple directed graph representation
-  dgraph := [];
-  for i in [1..DegreeOfTransformation(t)] do
-    Add(dgraph, [i,i^t]);
-  od; 
-  return VIZ_drawDirectedGraph(params.filename,dgraph);  
-end;
-
 VIZ_drawMatrixDiagramForTransformations := function(t,params)
 local filename, l,i;
   l := t![1];
@@ -54,11 +27,12 @@ local filename, l,i;
 end;
 
 ####TRANSFORMATION####################################################################
+
 InstallMethod(Draw,
 "for transformations",
 [IsTransformation, IsRecord],
 function(t,params)
-  if VIZ_ExistsFieldInRecord(params, "mode") and params.mode="matrix" then
+  if "mode" in RecNames(params) and params.mode="matrix" then
     return VIZ_drawMatrixDiagramForTransformations(t,params);
   else 
     return VIZ_drawFunctionalDigraph(t,params);
@@ -76,13 +50,13 @@ InstallMethod(Draw,
 function(ts,params)
 local t, n, i,label,filename,gens,edge,ht,currentlabel,entries, inputsymbols, states;
 
-  if VIZ_ExistsFieldInRecord(params, "symbols") then
+  if "symbols" in RecNames(params) then
     inputsymbols := params.symbols;
   else
     inputsymbols := INPUTSYMBOLS;
   fi;
 
-  if VIZ_ExistsFieldInRecord(params, "states") then
+  if  "states" in RecNames(params) then
     states := params.states;
   else
     states := STATES;
