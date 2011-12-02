@@ -3,12 +3,115 @@
 
 # please keep the file alphabetized.
 
+# 
+
+# Usage: a small semigroup with generators. 
+
+# Returns: a string.
+
+# Notes: this does not draw a meaningful picture if applied to a transformation
+# semigroup. 
+
+# MP's code 
+
+InstallOtherMethod(DotCayleyGraph, "for a small semigroup",
+[IsSmallSemigroup],
+function(S)
+  local Zip, colors, gens, gen_colors, edges, dotstring, edge, node;
+
+  Zip := function(a,b)
+    local res,i;
+    res := [];
+    for i in [1..Minimum(Length(a), Length(b))] do
+      Add(res, [ a[i], b[i] ]);
+    od;
+    return res;
+  end;
+
+
+  colors := ["red", "green", "blue", "yellow", "lightblue", "grey", "black"];
+  colors := Concatenation(colors,colors);
+  gens := GeneratorsOfSemigroup(S);
+
+  gen_colors := Zip(gens, colors);
+  edges := Concatenation(List(gen_colors, y -> 
+   List(S, x->[x,y[1],x*y[1],y[2]])));
+
+  dotstring := "digraph CayleyGraph {\n";
+
+  for edge in edges do
+    dotstring := Concatenation(dotstring, "\"", String(edge[1]), "\"->\"",    
+     String(edge[3]), "\" [label=\"", String(edge[2]), "\",color=\"", edge[4],
+     "\"];\n");
+  od;
+
+  for node in S do
+   dotstring := Concatenation(dotstring, "\"", String(node),
+   "\" [shape=circle, style=filled, fillcolor=white];\n");
+  od;
+
+  dotstring := Concatenation(dotstring, "};\n");
+
+  return dotstring;
+end);
+
+###
+
+# Usage: semigroup, list, action. For example, 
+# DotSemigroupAction(s, Elements(s), OnRight);
+# DotSemigroupAction(s, Combinations([1..4]), OnSets);
+# DotSemigroupAction(s, [1..4], OnPoints);  
+
+# Returns: a string
+
+# Notes: generalizes Draw for a transformation semigroup. 
+
+# AN's code, hash tables should be removed from here. Edge labels don't work
+# properly.
+
+InstallGlobalFunction(DotSemigroupAction, 
+function(s, list, act)
+  local gens, str, ht, entries, label, edge, currentlabel, t, i;
+  
+  gens := GeneratorsOfSemigroup(s);
+  str:="";
+  Append(str, "digraph aut{\n");
+  Append(str, "node [shape=circle]");
+  Append(str, "edge [len=1.2]");
+  ht:=HTCreate("1 -> 2");
+  entries := [];
+
+  for t in [1..Size(gens)] do
+    label := Concatenation("", String(t));
+    for i in [1..Length(list)] do
+      if list[i] <> act(list[i], gens[t]) then
+        edge := Concatenation("\"", StringPrint(list[i]), "\"",
+        " -> \"", StringPrint(act(list[i],gens[t])), "\"");
+        currentlabel :=  HTValue(ht, edge);
+        if currentlabel = fail then
+           HTAdd(ht,edge,label);
+           Add(entries, edge);
+        else
+           HTUpdate(ht,edge,Concatenation(currentlabel,",",label));
+        fi;
+      fi;
+    od;
+  od;
+  #nodenames 
+  for edge in entries do
+        Append(str,Concatenation(edge , "[label=\"", HTValue(ht,edge) , "\"]\n"));
+  od;
+  Append(str,"}\n");
+  return str;
+end);
 
 # Usage: a list of adjacencies of a directed graph (as pos. ints)
 # For example, [[1,2],[3],[4,5,6], [], [], []] indicates that
 # 1->1, 1->2, 2->3, 3->4, 3->5, 3->6. 
 
 # Returns: a string. 
+
+# AN's code
 
 InstallGlobalFunction(DotDigraph, 
 function(digraph)
@@ -34,6 +137,8 @@ end);
 
 # Returns: a string. 
 
+# AN's code
+
 InstallGlobalFunction(DotFunctionalDigraph, 
 function(digraph)
   local str, str_i, i;
@@ -56,6 +161,8 @@ end);
 # graph object
 
 # Returns: a string. 
+
+# JDM's code
 
 InstallGlobalFunction(DotGraph,
 function(g)
@@ -89,6 +196,8 @@ end);
 # Usage: poset[i] should be a list containing the maximal elements less than i.
 
 # Returns: a string.
+
+# JDM's code
 
 InstallGlobalFunction(DotPoset,
 function(poset)

@@ -15,9 +15,6 @@ InstallGlobalFunction(VizLoadExtensions,
 function()
   Read(Concatenation(PackageInfo("viz")[1]!.InstallationPath,"/extensions.g")); end);
         
-
-# JDM move to splash.gi
-# splash - immediate display
 InstallOtherMethod(Splash,
 "with no parameters",
 [IsObject],

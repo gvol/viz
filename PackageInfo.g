@@ -67,10 +67,10 @@ PackageDoc := rec(
   Autoload  := true
 ),
 
-
 Dependencies := rec(
  GAP := ">=4.5",
- NeededOtherPackages := [["GAPDoc", ">= 1.2"]],
+ NeededOtherPackages := [["GAPDoc", ">= 1.4"], ["Grape", ">=4.3"], 
+ ["Smallsemi", ">=0.6.4"], ["orb", "3.7"]],
  SuggestedOtherPackages := [ ],
  ExternalConditions := [], 
 ),
@@ -82,7 +82,5 @@ Autoload := false,
 TestFile := "test/test.g",
 
 Keywords := ["visualisation"]
-
 ));
-
 
