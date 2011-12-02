@@ -62,6 +62,8 @@ end);
 # DotSemigroupAction(s, Combinations([1..4]), OnSets);
 # DotSemigroupAction(s, [1..4], OnPoints);  
 
+# try the above with a group!
+
 # Returns: a string
 
 # Notes: generalizes Draw for a transformation semigroup. 
@@ -99,7 +101,8 @@ function(s, list, act)
   od;
   #nodenames 
   for edge in entries do
-        Append(str,Concatenation(edge , "[label=\"", HTValue(ht,edge) , "\"]\n"));
+    Append(str,Concatenation(edge , "[label=\"", HTValue(ht,edge) , 
+     "\"]\n"));
   od;
   Append(str,"}\n");
   return str;
