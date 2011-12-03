@@ -3,9 +3,10 @@
 
 #JDM these should be made into global variables...
 
-PDF_VIEWER := "evince"; # the current Gnome document viewer on desktop UNIX machines
+#PDF_VIEWER := "evince"; # the current Gnome document viewer on desktop UNIX 
+# machines
 #On mac used this:
-#PDF_VIEWER := "/Applications/Preview.app/Contents/MacOS/Preview";
+PDF_VIEWER := "/Applications/Preview.app/Contents/MacOS/Preview";
 
 GRAPHVIZ := "dot -Tpdf";
 

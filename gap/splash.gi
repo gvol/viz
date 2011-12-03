@@ -3,44 +3,24 @@
 ## draw.gi           VIZ package  
 ##
 
-# JDM move to utils.gi
-
-InstallGlobalFunction(VizMakeDoc, 
-function()
-  MakeGAPDocDoc(Concatenation(PackageInfo("viz")[1]!.
-   InstallationPath, "/doc"), "viz.xml", ["draw.xml", "config.xml"], "viz", "MathJax");;
-end);
-
-InstallGlobalFunction(VizLoadExtensions,
-function()
-  Read(Concatenation(PackageInfo("viz")[1]!.InstallationPath,"/extensions.g")); end);
-        
-InstallOtherMethod(Splash,
-"with no parameters",
+InstallOtherMethod(Splash, "for an object",
 [IsObject],
 function(object)
-    Splash(object, rec()); #just include an empty parameter record    
-end
-);
+    Splash(object, rec()); 
+end);
 
 # splash - immediate display
-InstallMethod(Splash,
-"with parameters",
-[IsObject,IsRecord],
+
+InstallMethod(Splash, "with parameters",
+[IsObject, IsRecord],
 function(object, params)
 local pdfname, extension, physicalfilename, strings,log;
-  #if the filename is given we need to give a warning that it is ignored
-  if "filename" in RecNames(params) then 
-    Print("#W Parameter 'filename' is ignored for splashing.\n");
-  fi;
-  #if title is not given then simply "splash" is used
-  if not "title" in RecNames(params) then 
-      params.title := "splash";
-  fi;
+  
   #due to LaTeX's security feature it can only work in the current directory
-  params.filename := Filename(DirectoryCurrent(), "_tmp_viz_splash");
+  filename := Filename(DirectoryCurrent(), "_tmp_viz_splash");
   log := OutputTextFile(Concatenation(params.filename, ".gaplog"),true);
-  # the actual work is done by calling a Draw method, and the filename is returned with the proper extension suffixed
+  # the actual work is done by calling a Draw method, and the filename is 
+  # returned with the proper extension suffixed
   physicalfilename := Draw(object,params);
   # figuring out the extension
   strings := SplitString(physicalfilename,".");

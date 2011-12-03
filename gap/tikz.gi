@@ -61,7 +61,10 @@ function(arg)
   
   tex_str:=""; labels_str:="";
   Append(tex_str, Concatenation("\\documentclass{minimal}\n", 
-  "\\usepackage{tikz, tikz-qtree}\n", "\\begin{document}\n"));
+  "\\usepackage{tikz-qtree}\n", "\\begin{document}\n"));
+  Append(tex_str, "\\tikzset{edge from parent/.style=\n");
+  Append(tex_str, Concatenation("\t{draw, edge from parent ",
+  "path={(\\tikzparentnode) -- (\\tikzchildnode)}}}\n"));
 
   for i in roots do 
     
