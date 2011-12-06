@@ -1,6 +1,6 @@
 
 
-ReadPackage("viz/gap/dot.gi");
+ ReadPackage("viz/gap/dot.gi");
 ReadPackage("viz/gap/splash.gi");
 ReadPackage("viz/gap/tikz.gi");
 
