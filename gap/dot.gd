@@ -1,8 +1,10 @@
 
 
 DeclareOperation("DotCayleyGraph", [IsSemigroup and HasGeneratorsOfSemigroup]);
-DeclareGlobalFunction("DotSemigroupAction");
+DeclareGlobalFunction("DotDClass");
+DeclareGlobalFunction("DotDClasses");
 DeclareGlobalFunction("DotDigraph");
 DeclareGlobalFunction("DotFunctionalDigraph");
 DeclareGlobalFunction("DotGraph");
 DeclareGlobalFunction("DotPoset");
+DeclareGlobalFunction("DotSemigroupAction");

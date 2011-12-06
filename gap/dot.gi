@@ -108,6 +108,112 @@ function(s, list, act)
   return str;
 end);
 
+#############################################################################
+
+InstallGlobalFunction(DotDClass, 
+function(d)
+  local str, h, l, j, x;
+  
+  if not IsGreensClassOfTransSemigp(d) or not IsGreensDClass(d) then 
+    Error("the argument should be a D-class of a trans. semigroup.");
+  fi;
+
+  str:="";
+  Append(str, "digraph  DClasses {\n");
+  Append(str, "node [shape=plaintext]\n");
+
+  Append(str, "1 [label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
+  Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\">\n");
+
+  for l in LClasses(d) do 
+    Append(str, "<TR>");
+    if not IsRegularLClass(l) then  
+      for j in [1..NrRClasses(d)] do    
+        Append(str, "<TD></TD>");
+      od;
+    else
+      h:=HClasses(l);
+      for x in h do
+        if IsGroupHClass(x) then 
+          Append(str, "<TD>*</TD>");
+        else
+          Append(str, "<TD></TD>");
+        fi;
+      od;
+    fi;   
+    Append(str, "</TR>\n");
+  od;
+  Append(str, "</TABLE>>];\n}");
+
+  return str;
+end);
+
+#############################################################################
+
+InstallGlobalFunction(DotDClasses,
+function(s)
+  local str, i, h, rel, j, k, d, l, x;
+ 
+  if not IsTransformationSemigroup(s) then 
+    Error("the argument should be a trans. semigroup");
+    return fail;
+  fi;
+
+  str:="";
+  Append(str, "digraph  DClasses {\n");
+  Append(str, "node [shape=plaintext]\n");
+  Append(str, "edge [color=red,arrowhead=none]\n");
+  i:=0;
+  
+  for d in DClasses(s) do 
+    i:=i+1;
+    Append(str, String(i));
+    Append(str, " [shape=box style=dotted label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
+    Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\"");
+    Append(str, Concatenation(" PORT=\"", String(i), "\">\n"));
+    Append(str, "<TR BORDER=\"0\"><TD COLSPAN=\"");
+    Append(str, String(NrRClasses(d)));
+    Append(str, "\" BORDER=\"0\" >");
+    Append(str, String(i));
+    Append(str, "</TD></TR>");
+    for l in LClasses(d) do
+      Append(str, "<TR>");
+      if not IsRegularLClass(l) then
+        for j in [1..NrRClasses(d)] do
+          Append(str, "<TD></TD>"); 
+        od;
+      else
+        h:=HClasses(l);
+        for x in h do
+          if IsGroupHClass(x) then
+            Append(str, "<TD BGCOLOR=\"grey\">*</TD>");
+          else
+            Append(str, "<TD></TD>");
+          fi;
+        od;
+      fi;   
+      Append(str, "</TR>\n");
+    od;
+    Append(str, "</TABLE>>];\n");
+  od;
+  
+  rel:=PartialOrderOfDClasses(s);
+  rel:=List([1..Length(rel)], x-> Filtered(rel[x], y-> not x=y));
+
+  for i in [1..Length(rel)] do
+    j:=Difference(rel[i], Union(rel{rel[i]})); i:=String(i);
+    for k in j do
+      k:=String(k);
+      Append(str, Concatenation(i, " -> ", k, "\n"));
+    od;
+  od;
+
+  Append(str, " }");
+
+  return str;
+end);
+
+
 # Usage: a list of adjacencies of a directed graph (as pos. ints)
 # For example, [[1,2],[3],[4,5,6], [], [], []] indicates that
 # 1->1, 1->2, 2->3, 3->4, 3->5, 3->6. 

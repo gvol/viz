@@ -70,7 +70,7 @@ PackageDoc := rec(
 Dependencies := rec(
  GAP := ">=4.5",
  NeededOtherPackages := [["GAPDoc", ">= 1.4"], ["Grape", ">=4.3"], 
- ["Smallsemi", ">=0.6.4"], ["orb", "3.7"]],
+ ["Smallsemi", ">=0.6.4"], ["orb", "3.7"], ["citrus", "0.4"] ],
  SuggestedOtherPackages := [ ],
  ExternalConditions := [], 
 ),
