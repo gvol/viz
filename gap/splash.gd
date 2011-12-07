@@ -1,9 +1,4 @@
-#############################################################################
-##
-## draw.gd           VIZ package  
-##
-## Drawing GAP objects graphically. 
-##
-
-DeclareOperation("Splash",[IsObject,IsRecord]);
+#takes a string, tries to figure out whether it is Tikz or Dot
+#and processes accordingly and display
+DeclareGlobalFunction("Splash");
 
