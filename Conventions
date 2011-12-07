@@ -1,0 +1,24 @@
+1) all functions that produce a dot format output are called
+Dot*Something, and all functions that produce a tikz format output are
+called Tikz*Something, these functions are in the files dot.g* and
+tikz.g*
+
+2) all the functions return a string, which you can write to a file
+using FileString(filename, string); (this makes developing the code
+much simpler, and more versatile in the end).
+
+3) we should try to stick to the conventions outlined in the package
+development section of the manual. See
+http://www.cs.st-andrews.ac.uk/~alexk/example/doc/chapA.html for a
+draft of this guidance. In particular, we should properly declare all
+functions.
+
+4) I use 2 spaces as indentation in the code  (this is not so important)
+
+5) I'm using vim and so there are no lines (or few anyway) longer than
+80 characters (this too is not so important).
+
+6) Version numbers. The format for version numbers is "0.major.minor". 
+The minor number is supposed to be updated whenever some new functionality
+added or some existing modified and the corresponding log entry should be 
+put in the ChangeLog file and the repository tagged accordingly.    
