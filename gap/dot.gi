@@ -151,9 +151,16 @@ end);
 #############################################################################
 
 InstallGlobalFunction(DotDClasses,
-function(s)
-  local str, i, h, rel, j, k, d, l, x;
+function(arg)
+  local s, opts, str, i, gp, h, rel, j, k, d, l, x;
  
+  s:=arg[1]; 
+  if Length(arg)>1 then 
+    opts:=arg[2];
+  else
+    opts:=rec(maximal:=false);
+  fi;
+
   if not IsTransformationSemigroup(s) then 
     Error("the argument should be a trans. semigroup");
     return fail;
@@ -175,6 +182,9 @@ function(s)
     Append(str, String(NrRClasses(d)));
     Append(str, "\" BORDER=\"0\" >");
     Append(str, String(i));
+    if opts!.maximal and IsRegularDClass(d) then 
+       gp:=StructureDescription(GroupHClass(d));
+    fi;
     Append(str, "</TD></TR>");
     for l in LClasses(d) do
       Append(str, "<TR>");
@@ -186,7 +196,11 @@ function(s)
         h:=HClasses(l);
         for x in h do
           if IsGroupHClass(x) then
-            Append(str, "<TD BGCOLOR=\"grey\">*</TD>");
+            if opts!.maximal then 
+              Append(str, Concatenation("<TD BGCOLOR=\"grey\">", gp, "</TD>"));
+            else
+              Append(str, "<TD BGCOLOR=\"grey\">*</TD>");
+            fi;
           else
             Append(str, "<TD></TD>");
           fi;
