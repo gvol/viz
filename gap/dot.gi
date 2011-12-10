@@ -158,7 +158,7 @@ function(arg)
   if Length(arg)>1 then 
     opts:=arg[2];
   else
-    opts:=rec(maximal:=false);
+    opts:=rec(maximal:=false, number:=true);
   fi;
 
   if not IsTransformationSemigroup(s) then 
@@ -178,14 +178,19 @@ function(arg)
     Append(str, " [shape=box style=dotted label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
     Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\"");
     Append(str, Concatenation(" PORT=\"", String(i), "\">\n"));
-    Append(str, "<TR BORDER=\"0\"><TD COLSPAN=\"");
-    Append(str, String(NrRClasses(d)));
-    Append(str, "\" BORDER=\"0\" >");
-    Append(str, String(i));
+    
+    if opts!.number then 
+      Append(str, "<TR BORDER=\"0\"><TD COLSPAN=\"");
+      Append(str, String(NrRClasses(d)));
+      Append(str, "\" BORDER=\"0\" >");
+      Append(str, String(i));
+      Append(str, "</TD></TR>");
+    fi;
+    
     if opts!.maximal and IsRegularDClass(d) then 
        gp:=StructureDescription(GroupHClass(d));
     fi;
-    Append(str, "</TD></TR>");
+    
     for l in LClasses(d) do
       Append(str, "<TR>");
       if not IsRegularLClass(l) then
