@@ -195,7 +195,7 @@ function(arg)
       Append(str, "<TR>");
       if not IsRegularLClass(l) then
         for j in [1..NrRClasses(d)] do
-          Append(str, "<TD></TD>"); 
+          Append(str, "<TD CELLPADDING=\"10\"> </TD>"); 
         od;
       else
         h:=HClasses(l);
