@@ -52,7 +52,21 @@ Persons := [
                        " Scotland"] ),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
-  )
+  ),
+  rec( 
+    LastName      := "Pfeiffer",
+    FirstNames    := "Markus",
+    IsAuthor      := true,
+    IsMaintainer  := true,
+    Email         := "markusp@mcs.st-and.ac.uk",
+    WWWHome       := "",
+    PostalAddress := Concatenation( [
+                       "Mathematical Institute,",
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
+                       " Scotland"] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
+    )
 ],
 
 Status := "dev",
