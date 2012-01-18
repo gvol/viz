@@ -13,6 +13,19 @@ ArchiveURL := "http://bitbucket.org/zen154115/viz",
 ArchiveFormats := ".tar.gz",
 
 Persons := [
+ rec( 
+    LastName      := "Delgado",
+    FirstNames    := "Manuel",
+    IsAuthor      := true,
+    IsMaintainer  := true,
+    Email         := "mdelgado@fc.up.pt",
+    WWWHome       := "http://www.fc.up.pt/cmup/mdelgado",
+    PostalAddress := Concatenation( [
+                       "University of Porto\n",
+                       "Portugal" ] ),
+    Place         := "Porto, Portugal",
+    Institution   := "University of Porto"
+  ),
   rec( 
     LastName      := "Egri-Nagy",
     FirstNames    := "Attila",
@@ -69,8 +82,8 @@ PackageDoc := rec(
 
 Dependencies := rec(
  GAP := ">=4.5",
- NeededOtherPackages := [["GAPDoc", ">= 1.4"], ["Grape", ">=4.3"], 
- ["Smallsemi", ">=0.6.4"], ["orb", "3.7"], ["citrus", "0.4"] ],
+ NeededOtherPackages := [["GAPDoc", "1.4"], ["Grape", "4.3"], 
+ ["Smallsemi", "0.6.4"], ["orb", "3.7"], ["citrus", "0.6"] ],
  SuggestedOtherPackages := [ ],
  ExternalConditions := [], 
 ),
