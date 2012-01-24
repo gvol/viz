@@ -1,3 +1,13 @@
+#############################################################################
+##
+#W  PackageInfo.g
+#Y  Copyright (C) 2011-12                          The viz package authors
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
 SetPackageInfo( rec(
 
 PackageName := "viz",
@@ -59,7 +69,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "markusp@mcs.st-and.ac.uk",
-    WWWHome       := "",
+    WWWHome       := "http://www-groups.mcs.st-and.ac.uk/~markusp/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
@@ -71,10 +81,9 @@ Persons := [
 
 Status := "dev",
 
-README_URL := "http://bitbucket.org/zen154115/viz",
+README_URL := "nowhere yet",
 
-PackageInfoURL := "http://bitbucket.org/zen154115/viz/downloads",
-
+PackageInfoURL := "nowhere yet",
 
 AbstractHTML := 
   "<span class=\"pkgname\">Viz</span> is  a <span class=\"pkgname\">GAP</span> package \
@@ -96,9 +105,8 @@ PackageDoc := rec(
 
 Dependencies := rec(
  GAP := ">=4.5",
- NeededOtherPackages := [["GAPDoc", "1.4"], ["Grape", "4.3"], 
- ["Smallsemi", "0.6.4"], ["orb", "3.7"], ["citrus", "0.6"] ],
- SuggestedOtherPackages := [ ],
+ NeededOtherPackages := [["GAPDoc", "1.4"]],
+ SuggestedOtherPackages := [["citrus", "0.6"] ],
  ExternalConditions := [], 
 ),
 
