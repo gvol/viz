@@ -14,9 +14,10 @@
 
 # MP's code 
 
-InstallOtherMethod(DotCayleyGraph, "for a small semigroup",
-[IsSmallSemigroup],
-function(S)
+InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
+#[IsSmallSemigroup],
+[IsSemigroup and HasGeneratorsOfSemigroup],
+        function(S)
   local Zip, colors, gens, gen_colors, edges, dotstring, edge, node;
 
   Zip := function(a,b)

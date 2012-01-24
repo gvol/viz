@@ -1,5 +1,4 @@
 
-
 ReadPackage("viz","config");
 
 ReadPackage("viz/gap/dot.gd");
