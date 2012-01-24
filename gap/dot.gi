@@ -53,7 +53,6 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
 
     return dotstring;
   end);
-fi;
 
 ###
 
