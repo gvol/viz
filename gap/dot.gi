@@ -41,14 +41,14 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
   dotstring := "digraph CayleyGraph {\n";
 
   for edge in edges do
-    dotstring := Concatenation(dotstring, "\"", String(edge[1]), "\"->\"",    
+    Append(dotstring,Concatenation("\"", String(edge[1]), "\"->\"",    
      String(edge[3]), "\" [label=\"", String(edge[2]), "\",color=\"", edge[4],
-     "\"];\n");
+     "\"];\n"));
   od;
 
   for node in S do
-   dotstring := Concatenation(dotstring, "\"", String(node),
-   "\" [shape=circle, style=filled, fillcolor=white];\n");
+   Append(dotstring,Concatenation( "\"", String(node),
+   "\" [shape=circle, style=filled, fillcolor=white];\n"));
   od;
 
   dotstring := Concatenation(dotstring, "};\n");
