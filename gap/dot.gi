@@ -15,46 +15,44 @@
 # MP's code 
 
 InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
-#[IsSmallSemigroup],
 [IsSemigroup and HasGeneratorsOfSemigroup],
         function(S)
   local Zip, colors, gens, gen_colors, edges, dotstring, edge, node;
 
-  Zip := function(a,b)
-    local res,i;
-    res := [];
-    for i in [1..Minimum(Length(a), Length(b))] do
-      Add(res, [ a[i], b[i] ]);
-    od;
-    return res;
-  end;
+    Zip := function(a,b)
+      local res,i;
+      res := [];
+      for i in [1..Minimum(Length(a), Length(b))] do
+        Add(res, [ a[i], b[i] ]);
+      od;
+      return res;
+    end;
 
+    colors := ["red", "green", "blue", "yellow", "lightblue", "grey", "black"];
+    colors := Concatenation(colors,colors);
+    gens := GeneratorsOfSemigroup(S);
 
-  colors := ["red", "green", "blue", "yellow", "lightblue", "grey", "black"];
-  colors := Concatenation(colors,colors);
-  gens := GeneratorsOfSemigroup(S);
+    gen_colors := Zip(gens, colors);
+    edges := Concatenation(List(gen_colors, y -> 
+     List(S, x->[x,y[1],x*y[1],y[2]])));
 
-  gen_colors := Zip(gens, colors);
-  edges := Concatenation(List(gen_colors, y -> 
-   List(S, x->[x,y[1],x*y[1],y[2]])));
+    dotstring := "digraph CayleyGraph {\n";
 
-  dotstring := "digraph CayleyGraph {\n";
-
-  for edge in edges do
-    Append(dotstring,Concatenation("\"", String(edge[1]), "\"->\"",    
+    for edge in edges do
+     Append(dotstring,Concatenation("\"", String(edge[1]), "\"->\"",    
      String(edge[3]), "\" [label=\"", String(edge[2]), "\",color=\"", edge[4],
      "\"];\n"));
-  od;
+    od;
 
-  for node in S do
-   Append(dotstring,Concatenation( "\"", String(node),
-   "\" [shape=circle, style=filled, fillcolor=white];\n"));
-  od;
+    for node in S do
+      Append(dotstring,Concatenation( "\"", String(node),
+       "\" [shape=circle, style=filled, fillcolor=white];\n"));
+    od;
 
-  dotstring := Concatenation(dotstring, "};\n");
+    dotstring := Concatenation(dotstring, "};\n");
 
-  return dotstring;
-end);
+    return dotstring;
+  end);
 
 ###
 
@@ -72,141 +70,74 @@ end);
 # AN's code, hash tables should be removed from here. Edge labels don't work
 # properly.
 
-InstallGlobalFunction(DotSemigroupAction, 
-function(s, list, act)
-  local gens, str, ht, entries, label, edge, currentlabel, t, i;
-  
-  gens := GeneratorsOfSemigroup(s);
-  str:="";
-  Append(str, "digraph aut{\n");
-  Append(str, "node [shape=circle]");
-  Append(str, "edge [len=1.2]");
-  ht:=HTCreate("1 -> 2");
-  entries := [];
+if not TestPackageAvailability("orb", "3.7")=fail then 
+  InstallGlobalFunction(DotSemigroupAction, 
+  function(s, list, act)
+    local gens, str, ht, entries, label, edge, currentlabel, t, i;
+    
+    gens := GeneratorsOfSemigroup(s);
+    str:="";
+    Append(str, "digraph aut{\n");
+    Append(str, "node [shape=circle]");
+    Append(str, "edge [len=1.2]");
+    ht:=HTCreate("1 -> 2");
+    entries := [];
 
-  for t in [1..Size(gens)] do
-    label := Concatenation("", String(t));
-    for i in [1..Length(list)] do
-      if list[i] <> act(list[i], gens[t]) then
-        edge := Concatenation("\"", StringPrint(list[i]), "\"",
-        " -> \"", StringPrint(act(list[i],gens[t])), "\"");
-        currentlabel :=  HTValue(ht, edge);
-        if currentlabel = fail then
-           HTAdd(ht,edge,label);
-           Add(entries, edge);
-        else
-           HTUpdate(ht,edge,Concatenation(currentlabel,",",label));
+    for t in [1..Size(gens)] do
+      label := Concatenation("", String(t));
+      for i in [1..Length(list)] do
+        if list[i] <> act(list[i], gens[t]) then
+          edge := Concatenation("\"", StringPrint(list[i]), "\"",
+          " -> \"", StringPrint(act(list[i],gens[t])), "\"");
+          currentlabel :=  HTValue(ht, edge);
+          if currentlabel = fail then
+             HTAdd(ht,edge,label);
+             Add(entries, edge);
+          else
+             HTUpdate(ht,edge,Concatenation(currentlabel,",",label));
+          fi;
         fi;
-      fi;
+      od;
     od;
-  od;
-  #nodenames 
-  for edge in entries do
-    Append(str,Concatenation(edge , "[label=\"", HTValue(ht,edge) , 
-     "\"]\n"));
-  od;
-  Append(str,"}\n");
-  return str;
-end);
+    #nodenames 
+    for edge in entries do
+      Append(str,Concatenation(edge , "[label=\"", HTValue(ht,edge) , 
+       "\"]\n"));
+    od;
+    Append(str,"}\n");
+    return str;
+  end);
+fi;
 
 #############################################################################
 
-InstallGlobalFunction(DotDClass, 
-function(d)
-  local str, h, l, j, x;
-  
-  if not IsGreensClassOfTransSemigp(d) or not IsGreensDClass(d) then 
-    Error("the argument should be a D-class of a trans. semigroup.");
-  fi;
-
-  str:="";
-  Append(str, "digraph  DClasses {\n");
-  Append(str, "node [shape=plaintext]\n");
-
-  Append(str, "1 [label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
-  Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\">\n");
-
-  for l in LClasses(d) do 
-    Append(str, "<TR>");
-    if not IsRegularLClass(l) then  
-      for j in [1..NrRClasses(d)] do    
-        Append(str, "<TD></TD>");
-      od;
-    else
-      h:=HClasses(l);
-      for x in h do
-        if IsGroupHClass(x) then 
-          Append(str, "<TD>*</TD>");
-        else
-          Append(str, "<TD></TD>");
-        fi;
-      od;
-    fi;   
-    Append(str, "</TR>\n");
-  od;
-  Append(str, "</TABLE>>];\n}");
-
-  return str;
-end);
-
-#############################################################################
-
-InstallGlobalFunction(DotDClasses,
-function(arg)
-  local s, opts, str, i, gp, h, rel, j, k, d, l, x;
- 
-  s:=arg[1]; 
-  if Length(arg)>1 then 
-    opts:=arg[2];
-  else
-    opts:=rec(maximal:=false, number:=true);
-  fi;
-
-  if not IsTransformationSemigroup(s) then 
-    Error("the argument should be a trans. semigroup");
-    return fail;
-  fi;
-
-  str:="";
-  Append(str, "digraph  DClasses {\n");
-  Append(str, "node [shape=plaintext]\n");
-  Append(str, "edge [color=red,arrowhead=none]\n");
-  i:=0;
-  
-  for d in DClasses(s) do 
-    i:=i+1;
-    Append(str, String(i));
-    Append(str, " [shape=box style=dotted label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
-    Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\"");
-    Append(str, Concatenation(" PORT=\"", String(i), "\">\n"));
+if TestPackageAvailability("citrus", "0.6") then 
+  InstallGlobalFunction(DotDClass, 
+  function(d)
+    local str, h, l, j, x;
     
-    if opts!.number then 
-      Append(str, "<TR BORDER=\"0\"><TD COLSPAN=\"");
-      Append(str, String(NrRClasses(d)));
-      Append(str, "\" BORDER=\"0\" >");
-      Append(str, String(i));
-      Append(str, "</TD></TR>");
+    if not IsGreensClassOfTransSemigp(d) or not IsGreensDClass(d) then 
+      Error("the argument should be a D-class of a trans. semigroup.");
     fi;
-    
-    if opts!.maximal and IsRegularDClass(d) then 
-       gp:=StructureDescription(GroupHClass(d));
-    fi;
-    
-    for l in LClasses(d) do
+
+    str:="";
+    Append(str, "digraph  DClasses {\n");
+    Append(str, "node [shape=plaintext]\n");
+
+    Append(str, "1 [label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
+    Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\">\n");
+
+    for l in LClasses(d) do 
       Append(str, "<TR>");
-      if not IsRegularLClass(l) then
-        for j in [1..NrRClasses(d)] do
-          Append(str, "<TD CELLPADDING=\"10\"> </TD>"); 
+      if not IsRegularLClass(l) then  
+        for j in [1..NrRClasses(d)] do    
+          Append(str, "<TD></TD>");
         od;
       else
         h:=HClasses(l);
         for x in h do
-          if IsGroupHClass(x) then
-            if opts!.maximal then 
-              Append(str, Concatenation("<TD BGCOLOR=\"grey\">", gp, "</TD>"));
-            else
-              Append(str, "<TD BGCOLOR=\"grey\">*</TD>");
-            fi;
+          if IsGroupHClass(x) then 
+            Append(str, "<TD>*</TD>");
           else
             Append(str, "<TD></TD>");
           fi;
@@ -214,25 +145,97 @@ function(arg)
       fi;   
       Append(str, "</TR>\n");
     od;
-    Append(str, "</TABLE>>];\n");
-  od;
-  
-  rel:=PartialOrderOfDClasses(s);
-  rel:=List([1..Length(rel)], x-> Filtered(rel[x], y-> not x=y));
+    Append(str, "</TABLE>>];\n}");
 
-  for i in [1..Length(rel)] do
-    j:=Difference(rel[i], Union(rel{rel[i]})); i:=String(i);
-    for k in j do
-      k:=String(k);
-      Append(str, Concatenation(i, " -> ", k, "\n"));
+    return str;
+  end);
+fi;
+
+#############################################################################
+
+if TestPackageAvailability("citrus", "0.6") then 
+  InstallGlobalFunction(DotDClasses,
+  function(arg)
+    local s, opts, str, i, gp, h, rel, j, k, d, l, x;
+   
+    s:=arg[1]; 
+    if Length(arg)>1 then 
+      opts:=arg[2];
+    else
+      opts:=rec(maximal:=false, number:=true);
+    fi;
+
+    if not IsTransformationSemigroup(s) then 
+      Error("the argument should be a trans. semigroup");
+      return fail;
+    fi;
+
+    str:="";
+    Append(str, "digraph  DClasses {\n");
+    Append(str, "node [shape=plaintext]\n");
+    Append(str, "edge [color=red,arrowhead=none]\n");
+    i:=0;
+    
+    for d in DClasses(s) do 
+      i:=i+1;
+      Append(str, String(i));
+      Append(str, " [shape=box style=dotted label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
+      Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\"");
+      Append(str, Concatenation(" PORT=\"", String(i), "\">\n"));
+      
+      if opts!.number then 
+        Append(str, "<TR BORDER=\"0\"><TD COLSPAN=\"");
+        Append(str, String(NrRClasses(d)));
+        Append(str, "\" BORDER=\"0\" >");
+        Append(str, String(i));
+        Append(str, "</TD></TR>");
+      fi;
+      
+      if opts!.maximal and IsRegularDClass(d) then 
+         gp:=StructureDescription(GroupHClass(d));
+      fi;
+      
+      for l in LClasses(d) do
+        Append(str, "<TR>");
+        if not IsRegularLClass(l) then
+          for j in [1..NrRClasses(d)] do
+            Append(str, "<TD CELLPADDING=\"10\"> </TD>"); 
+          od;
+        else
+          h:=HClasses(l);
+          for x in h do
+            if IsGroupHClass(x) then
+              if opts!.maximal then 
+                Append(str, Concatenation("<TD BGCOLOR=\"grey\">", gp, "</TD>"));
+              else
+                Append(str, "<TD BGCOLOR=\"grey\">*</TD>");
+              fi;
+            else
+              Append(str, "<TD></TD>");
+            fi;
+          od;
+        fi;   
+        Append(str, "</TR>\n");
+      od;
+      Append(str, "</TABLE>>];\n");
     od;
-  od;
+    
+    rel:=PartialOrderOfDClasses(s);
+    rel:=List([1..Length(rel)], x-> Filtered(rel[x], y-> not x=y));
 
-  Append(str, " }");
+    for i in [1..Length(rel)] do
+      j:=Difference(rel[i], Union(rel{rel[i]})); i:=String(i);
+      for k in j do
+        k:=String(k);
+        Append(str, Concatenation(i, " -> ", k, "\n"));
+      od;
+    od;
 
-  return str;
-end);
+    Append(str, " }");
 
+    return str;
+  end);
+fi;
 
 # Usage: a list of adjacencies of a directed graph (as pos. ints)
 # For example, [[1,2],[3],[4,5,6], [], [], []] indicates that
@@ -296,10 +299,6 @@ end);
 InstallGlobalFunction(DotGraph,
 function(g)
   local str, seen, j, i, k;
-
-  if IsGraph(g) then 
-    g:=g.adjacencies;
-  fi;
 
   str:="";
 
