@@ -17,7 +17,8 @@
 InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
 [IsSemigroup and HasGeneratorsOfSemigroup],
         function(S)
-  local Zip, colors, gens, gen_colors, edges, dotstring, edge, node;
+  local   Zip,  gens,  len,  colors,  nc,  gen_colors,  edges,  dotstring,  
+          edge,  node;
 
     Zip := function(a,b)
       local res,i;
@@ -28,13 +29,23 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
       return res;
     end;
 
-    colors := ["red", "green", "blue", "yellow", "lightblue", "grey", "black"];
-    colors := Concatenation(colors,colors);
     gens := GeneratorsOfSemigroup(S);
+    len := Length(gens);
+
+    # the colors below have been chosen to be used without restrictions with the 
+    #LaTeX xcolor package (It is convenient when prodicing tikz code by using dot2tex)
+    colors := ["red", "green", "blue", "cyan", "magenta", "yellow", "black", 
+               "gray", "white", "darkgray", "lightgray", "brown", "lime", "olive", 
+               "orange", "pink", "purple", "teal", "violet"];
+    nc := Length(colors);
+    #to reuse colors when the set of generators is large
+    if len > nc then
+      colors := List([1 .. len], i -> colors[(i mod nc) + 1]);
+    fi;
 
     gen_colors := Zip(gens, colors);
     edges := Concatenation(List(gen_colors, y -> 
-     List(S, x->[x,y[1],x*y[1],y[2]])));
+                     List(S, x->[x,y[1],x*y[1],y[2]])));
 
     dotstring := "digraph CayleyGraph {\n";
 
@@ -49,7 +60,7 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
        "\" [shape=circle, style=filled, fillcolor=white];\n"));
     od;
 
-    dotstring := Concatenation(dotstring, "};\n");
+    Append(dotstring, "};\n");
 
     return dotstring;
   end);

@@ -19,6 +19,6 @@ if First(VizViewers, v -> Filename(DirectoriesSystemPrograms(),v) <> fail)= fail
   elif Filename(DirectoriesSystemPrograms(),"dot") = fail then
     Info(InfoWarning,1,"GraphViz ( http://www.graphviz.org ) is not installed. Latex will be used to produce images\n");
   fi;
-  if Filename(DirectoriesSystemPrograms(),"dot2te") = fail then
+  if Filename(DirectoriesSystemPrograms(),"dot2tex") = fail then
     Info(InfoWarning,1,"dot2tex is not instaled; graphviz will be used to produce images\n");
   fi;
