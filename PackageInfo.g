@@ -14,9 +14,9 @@ PackageName := "viz",
 
 Subtitle := "viz",
 
-Version := "0.2.2",
+Version := "0.2.3",
 
-Date := "17/12/2011",
+Date := "29/01/2012",
 
 ArchiveURL := "http://bitbucket.org/zen154115/viz",
 

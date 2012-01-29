@@ -1,5 +1,6 @@
 
  ReadPackage("viz/gap/dot.gi");
+ReadPackage("viz/gap/options.gi");
 ReadPackage("viz/gap/splash.gi");
 ReadPackage("viz/gap/tikz.gi");
 
@@ -9,7 +10,15 @@ ReadPackage("viz/gap/tikz.gi");
 # transformations and transformation semigroups
 #ReadPackage("Viz","/gap/drawts.g");
 
-VizViewers := ["xpdf","evince", "okular", "gv"];
+######## The treatment of the viewers must be done in another way...
+#VizViewers := ["xpdf","evince", "okular", "gv"];
+    if ARCH_IS_UNIX( ) then
+      VizViewers := ["xpdf","xdg-open","evince", "okular", "gv"];
+    elif ARCH_IS_WINDOWS( ) then
+      VizViewers := ["xpdf","evince", "okular", "gv"];
+    elif ARCH_IS_MAC_OS_X( ) then
+      VizViewers := ["xpdf","open","evince", "okular", "gv"];
+    fi;
 
 if First(VizViewers, v -> Filename(DirectoriesSystemPrograms(),v) <> fail)= fail then
     Info(InfoWarning,1,"No pdf viewer from the list ", VizViewers, " is installed, thus there will be no output of any image\n");

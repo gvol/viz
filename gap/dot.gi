@@ -64,6 +64,176 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
 
     return dotstring;
   end);
+  
+  ########################################################################
+  #Outputs a dot string for the (right) Cayley graph of a semigroup (or a monoid)
+  # The input is a semigroup and a record with options (which may not be given)
+  #Example: 
+  #S := Semigroup(Transformation( [ 2, 3, 4, 1, 5 ] ), Transformation( [ 1, 2, 4, 5, 5 ] ));;
+  #dotstring:= DotRightCayleyGraph(S,rec(edge_labels:="letters",node_labels:="numbers",highlight:=[[Idempotents,[],"blue"],[MultiplicativeNeutralElement,"box","red"]]));;
+  #
+  # The result can be viewed by executing: Splash_MD(dotstring);
+  #
+  # Without options: Splash_MD(DotRightCayleyGraph(S));
+InstallGlobalFunction(DotRightCayleyGraph,
+function(arg)
+  local   S,  size,  elts,  opt,  o,  useOne,  gens,  len,  highlight,  triple,  
+          fs,  nodes,  edge_labels,  node_labels,  Zip,  gen_colors,  edges,  
+          dotstring,  edge,  node;
+
+  S := arg[1];
+  size := Size(S);
+  if size = 1 then
+    Print("The semigroup is trivial...\n");
+    return;
+  fi;
+  elts := Elements(S);
+
+  if Length(arg) = 1 then
+    opt := VizDefaultOptionsRecordForGraphs;   
+  elif Length(arg) = 2 then
+    o := arg[2];
+    if not IsSubset(RecNames(VizDefaultOptionsRecordForGraphs),RecNames(o)) then
+      Info(InfoViz,1,"The options ", Difference(RecNames(o),RecNames(VizDefaultOptionsRecordForGraphs))," have no efect\n");
+    fi;
+    opt := ProcessVizOptionsForGraphs(arg[2]);
+  fi;
+
+  ####### process options that are specific to this function #######
+  ## the <useOne> and <highligth> options and some labeling options
+  #
+  #### useOne
+  #
+  # when S is a monoid, the identity appears as a generator (in some cases
+  ## just for for technical reasons).   
+  # when useOne is true, there is a loop in each node   
+  if IsBound(opt.useOne) then
+    useOne := opt.useOne;
+  else
+    useOne := false;
+  fi;
+  if useOne then
+    gens := GeneratorsOfSemigroup(S);
+  else
+    gens := GeneratorsOfSemigroup(S);
+    if MultiplicativeNeutralElement(S) in GeneratorsOfSemigroup(S) then
+      gens := Difference(GeneratorsOfSemigroup(S),[MultiplicativeNeutralElement(S)]);
+    else
+      gens := GeneratorsOfSemigroup(S);
+    fi;
+  fi;
+  len := Length(gens);  
+  #
+  ## highlight
+  #
+#  Error("");
+  if IsBound(opt.highlight)  and not (opt.highlight = false) then
+    highlight := StructuralCopy(opt.highlight);
+    for triple in highlight do
+      # the sets of nodes to be highlighted which are given by functions are
+      ## computed 
+      if IsFunction(triple[1]) then
+        fs := triple[1](S);
+        if IsList(fs) then
+          triple[1] := triple[1](S);
+        else
+          triple[1] := [triple[1](S)];
+        fi;
+      fi;
+      triple[1] := List(triple[1], s -> Position(elts,s));
+    od;
+  else
+    highlight := [];
+  fi;
+  nodes := TreatNodeData(size,highlight);
+
+  ####### post-process options (labels) #######
+  ####edge_labels
+  # When "generators" is the value of the option edge_labels and the number
+  ####of generators is large, this option must be post-processed inside the function 
+  if opt.edge_labels = "generators" then
+    if len > 26 then
+      Print("The number of generators is too large to use letters as labels; numbers will be used instead \n");
+      edge_labels := [1..len];
+    else 
+      edge_labels := [gens];
+    fi;
+  elif opt.edge_labels = "letters" then
+    if len > 26 then
+      Print("The number of generators is too large to use letters as labels; numbers will be used instead \n");
+      edge_labels := [1..len];
+    else 
+      edge_labels := VizDefaultAlphabet;
+    fi;
+  elif opt.edge_labels = "none" then
+    edge_labels := [];
+  elif opt.edge_labels = "numbers" then
+    edge_labels := [1..len];
+  fi;
+
+  ####node_labels
+  if opt.node_labels = "numbers" then
+    node_labels := [1..size];
+  elif opt.node_labels = "elements" then
+    node_labels := elts;
+  elif opt.node_labels = "none" then
+    node_labels := [];
+  fi;
+  ####### end of process labels #######    
+
+  ####### end of process options #######
+
+
+  ## a local functions ##
+  Zip := function(a,b)
+    local res,i;
+    res := [];
+    for i in [1..Minimum(Length(a), Length(b))] do
+      Add(res, [ a[i], b[i] ]);
+    od;
+    return res;
+  end;
+
+  ## end of local functions ##
+
+
+  gen_colors := Zip(gens, opt.edge_colors);
+  if edge_labels = [] then
+    edges := Concatenation(List(gen_colors, y -> 
+                     List(S, x->[Position(elts,x),,
+                             Position(elts,x*y[1]),y[2]])));
+  else
+    edges := Concatenation(List(gen_colors, y -> 
+                     List(S, x->[Position(elts,x),
+                               edge_labels[Position(gens,y[1])],
+                             Position(elts,x*y[1]),y[2]])));
+  fi;
+  dotstring := "digraph CayleyGraph {\n";
+  for edge in edges do
+    if not IsBound(edge[2]) then
+      Append(dotstring,Concatenation(String(edge[1]), "->",    
+              String(edge[3]), "[label=\"", "\", color=\"", edge[4],"\"];\n"));
+    else
+        Append(dotstring,Concatenation(String(edge[1]), "->",    
+                String(edge[3]), "[label=\"", 
+                String(edge[2]), "\", color=\"", edge[4],"\"];\n"));
+    fi;
+  od;
+  #
+  #    Error("");
+  for node in nodes do
+    if node_labels = [] then
+      Append(dotstring,Concatenation( String(node[1]), " [label=\"", "\",shape=\"",node[2], "\",style=filled, fillcolor=\"",node[3],"\"];\n"));
+    else
+      Append(dotstring,Concatenation( String(node[1]), " [label=", String(node_labels[node[1]]),",shape=\"",node[2], "\",style=filled, fillcolor=\"",node[3],"\"];\n"));
+    fi;
+  od;
+
+          ######### caption.... not yet....        
+  Append(dotstring, "};\n");
+
+  return dotstring;
+end);
 
 ###
 
