@@ -152,14 +152,14 @@ function(arg)
   # When "generators" is the value of the option edge_labels and the number
   ####of generators is large, this option must be post-processed inside the function 
   if opt.edge_labels = "generators" then
-    if len > 26 then
+    if len > Length(VizDefaultAlphabet) then
       Print("The number of generators is too large to use letters as labels; numbers will be used instead \n");
       edge_labels := [1..len];
     else 
       edge_labels := [gens];
     fi;
   elif opt.edge_labels = "letters" then
-    if len > 26 then
+    if len > Length(VizDefaultAlphabet) then
       Print("The number of generators is too large to use letters as labels; numbers will be used instead \n");
       edge_labels := [1..len];
     else 
