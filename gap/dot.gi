@@ -100,20 +100,10 @@ function(arg)
   fi;
 
   ####### process options that are specific to this function #######
-  ## the <useOne> and <highligth> options and some labeling options
+  ## <highligth> options and some labeling options
   #
-  #### useOne
-  #
-  # when S is a monoid, the identity appears as a generator (in some cases
-  ## just for for technical reasons).   
-  # when useOne is true, there is a loop in each node   
-  if IsBound(opt.useOne) then
-    useOne := opt.useOne;
-  else
-    useOne := false;
-  fi;
   
-  gens := Generators(S);
+  gens := Generators(S); #monoid or semigroup generators according to whether S is a monoid or a semigroup.
   len := Length(gens);  
   #
   ## highlight
@@ -145,7 +135,7 @@ function(arg)
   ####of generators is large, this option must be post-processed inside the function 
   if opt.edge_labels = "generators" then
     if len > Length(VizDefaultAlphabet) then
-      Info(InfoViz,2,"The number of generators is too large to use letters as labels."); 
+      Info(InfoViz,2,"The number of generators is too large to use them as labels."); 
       Info(InfoViz,2,"numbers will be used instead.");
       edge_labels := [1..len];
     else 
@@ -153,7 +143,8 @@ function(arg)
     fi;
   elif opt.edge_labels = "letters" then
     if len > Length(VizDefaultAlphabet) then
-      Print("The number of generators is too large to use letters as labels; numbers will be used instead \n");
+      Info(InfoViz,2,"The number of generators is too large to use letters as labels."); 
+      Info(InfoViz,2,"numbers will be used instead.");
       edge_labels := [1..len];
     else 
       edge_labels := VizDefaultAlphabet;

@@ -5,6 +5,7 @@ ReadPackage("viz/gap/dot.gd");
 ReadPackage("viz/gap/options.gd");
 ReadPackage("viz/gap/tikz.gd");
 ReadPackage("viz/gap/splash.gd");
+ReadPackage("viz/gap/utils.gd");
 
 if not TestPackageAvailability("smallsemi", "0.6.4")=fail then 
   LoadPackage("smallsemi");

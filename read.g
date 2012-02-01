@@ -2,6 +2,7 @@ ReadPackage("viz/gap/dot.gi");
 ReadPackage("viz/gap/options.gi");
 ReadPackage("viz/gap/splash.gi");
 ReadPackage("viz/gap/tikz.gi");
+ReadPackage("viz/gap/utils.gi");
 
 # permutations and permutation groups
 #ReadPackage("Viz","/gap/drawgrp.g");
@@ -9,7 +10,9 @@ ReadPackage("viz/gap/tikz.gi");
 # transformations and transformation semigroups
 #ReadPackage("Viz","/gap/drawts.g");
 
-######## The treatment of the viewers must be done in another way...
+######## The treatment of the viewers must be done in another way... 
+## In particular, when the help viwer is capable of reading pdfs, is should be used 
+## as default.
 #VizViewers := ["xpdf","evince", "okular", "gv"];
     if ARCH_IS_UNIX( ) then
       VizViewers := ["xpdf","xdg-open","evince", "okular", "gv"];
