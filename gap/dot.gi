@@ -94,7 +94,7 @@ function(arg)
   elif Length(arg) = 2 then
     o := arg[2];
     if not IsSubset(RecNames(VizDefaultOptionsRecordForGraphs),RecNames(o)) then
-      Info(InfoViz,1,"The options ", Difference(RecNames(o),RecNames(VizDefaultOptionsRecordForGraphs))," have no efect\n");
+      Info(InfoViz,1,"The options ", Difference(RecNames(o),RecNames(VizDefaultOptionsRecordForGraphs))," have no effect.");
     fi;
     opt := ProcessVizOptionsForGraphs(arg[2]);
   fi;
@@ -112,16 +112,8 @@ function(arg)
   else
     useOne := false;
   fi;
-  if useOne then
-    gens := GeneratorsOfSemigroup(S);
-  else
-    gens := GeneratorsOfSemigroup(S);
-    if MultiplicativeNeutralElement(S) in GeneratorsOfSemigroup(S) then
-      gens := Difference(GeneratorsOfSemigroup(S),[MultiplicativeNeutralElement(S)]);
-    else
-      gens := GeneratorsOfSemigroup(S);
-    fi;
-  fi;
+  
+  gens := Generators(S);
   len := Length(gens);  
   #
   ## highlight
@@ -153,7 +145,8 @@ function(arg)
   ####of generators is large, this option must be post-processed inside the function 
   if opt.edge_labels = "generators" then
     if len > Length(VizDefaultAlphabet) then
-      Print("The number of generators is too large to use letters as labels; numbers will be used instead \n");
+      Info(InfoViz,2,"The number of generators is too large to use letters as labels."); 
+      Info(InfoViz,2,"numbers will be used instead.");
       edge_labels := [1..len];
     else 
       edge_labels := [gens];
