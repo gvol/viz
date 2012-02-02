@@ -192,7 +192,7 @@ function(arg)
                                edge_labels[Position(gens,y[1])],
                              Position(elts,x*y[1]),y[2]])));
   fi;
-  dotstring := "digraph CayleyGraph {\n";
+  dotstring := "/*dot*/ \n digraph CayleyGraph {\n";
   for edge in edges do
     if not IsBound(edge[2]) then
       Append(dotstring,Concatenation(String(edge[1]), "->",    

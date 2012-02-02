@@ -70,8 +70,8 @@ end
 # * a string (dot) or a function that applied to the ramaining argument produces a dot string
 InstallGlobalFunction(Splash_MD,
 function(arg)
-  local   opt,  dotstring,  f,  s,  path,  dir,  tdir,  file,  viewer,  
-          viewers,  tikz,  filetype,  command;
+  local   opt,  dotstring,  f,  s,  path,  dir,  tdir,  file,  viewer,  tikz,  
+          filetype,  command;
 
   ##########
   # there are global warnings concerning the avaiability of software

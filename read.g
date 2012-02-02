@@ -10,26 +10,3 @@ ReadPackage("viz/gap/utils.gi");
 # transformations and transformation semigroups
 #ReadPackage("Viz","/gap/drawts.g");
 
-######## The treatment of the viewers must be done in another way... 
-## In particular, when the help viwer is capable of reading pdfs, is should be used 
-## as default.
-#VizViewers := ["xpdf","evince", "okular", "gv"];
-    if ARCH_IS_MAC_OS_X( ) then
-      VizViewers := ["xpdf","open","evince", "okular", "gv"];
-    elif ARCH_IS_UNIX( ) then
-      VizViewers := ["xpdf","xdg-open","evince", "okular", "gv"];
-    elif ARCH_IS_WINDOWS( ) then
-      VizViewers := ["xpdf","evince", "okular", "gv"];
-    fi;
-
-if First(VizViewers, v -> Filename(DirectoriesSystemPrograms(),v) <> fail)= fail then
-    Info(InfoWarning,1,"No pdf viewer from the list ", VizViewers, " is installed, thus there will be no output of any image\n");
-  fi;
-  if Filename(DirectoriesSystemPrograms(),"dot") = fail and Filename(DirectoriesSystemPrograms(),"dot2tex") = fail then
-    Info(InfoWarning,1,"As neither GraphViz ( www.graphviz.org ) nor dot2tex ( www.fauskes.net/code/dot2tex ) is installed, no image will be produced");
-  elif Filename(DirectoriesSystemPrograms(),"dot") = fail then
-    Info(InfoWarning,1,"GraphViz ( http://www.graphviz.org ) is not installed. Latex will be used to produce images\n");
-  fi;
-  if Filename(DirectoriesSystemPrograms(),"dot2tex") = fail then
-    Info(InfoWarning,1,"dot2tex is not installed; graphviz will be used to produce images\n");
-  fi;

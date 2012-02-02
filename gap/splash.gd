@@ -71,7 +71,7 @@ BindGlobal("NodeLabelsForVizExtended", Concatenation(NodeLabelsForViz,
 
 #########################################################################
 # the edge shapes below are pre-defined (graphviz)
-BindGlobal("EdgeShapesForViz",["normal", "vee", "box", "lbox", "rbox", "obox",
+BindGlobal("EdgeShapesForViz",["vee", "normal", "box", "lbox", "rbox", "obox",
         "olbox", "orbox", "crow", "lcrow", "rcrow", "diamond", "ldiamond", 
         "rdiamond", "odiamond", "oldiamond", "ordiamond", "dot", "odot","inv", 
         "linv", "rinv", "oinv", "olinv", "orinv", "none", "lnormal", "rnormal", 
@@ -99,13 +99,15 @@ BindGlobal("VizOptionsForGraphsExtended",Concatenation(VizOptionsForGraphs,
 #########################################################################
 # the default alphabet
 BindGlobal("VizDefaultAlphabet",["a","b","c","d","e","f","g","h","i","j", 
-        "k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]); 
+        "k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+        "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P",
+        "Q","R","S","T","U","V","W","X","Y","Z"]); 
 #########################################################################
 # the default edge label
-BindGlobal("VizDefaultEdgeLabels","none");
+BindGlobal("VizDefaultEdgeLabels","numbers");
 #########################################################################
 # the default node label
-BindGlobal("VizDefaultNodeLabels","none");
+BindGlobal("VizDefaultNodeLabels","numbers");
 #########################################################################
 # the default node label
 BindGlobal("VizDefaultNodesShape","circle");
@@ -150,3 +152,28 @@ BindGlobal("VizDefaultOptionsRecordForGraphs",rec(
 # the list of admissible options for splash (more precisely: the options 
 #that have some efect)
 BindGlobal("VizOptionsForSplash",["path","directory","file","viewer","tikz","filetype"]);
+
+
+######## The treatment of the viewers must be done in another way... 
+## In particular, when the help viwer is capable of reading pdfs, is should be used 
+## as default.
+#VizViewers := ["xpdf","evince", "okular", "gv"];
+    if ARCH_IS_MAC_OS_X( ) then
+      BindGlobal("VizViewers", ["xpdf","open","evince", "okular", "gv"]);
+    elif ARCH_IS_UNIX( ) then
+      BindGlobal("VizViewers", ["xpdf","xdg-open","evince", "okular", "gv"]);
+    elif ARCH_IS_WINDOWS( ) then
+      BindGlobal("VizViewers", ["xpdf","evince", "okular", "gv"]);
+    fi;
+
+if First(VizViewers, v -> Filename(DirectoriesSystemPrograms(),v) <> fail)= fail then
+    Info(InfoWarning,1,"No pdf viewer from the list ", VizViewers, " is installed, thus there will be no output of any image\n");
+  fi;
+  if Filename(DirectoriesSystemPrograms(),"dot") = fail and Filename(DirectoriesSystemPrograms(),"dot2tex") = fail then
+    Info(InfoWarning,1,"As neither GraphViz ( www.graphviz.org ) nor dot2tex ( www.fauskes.net/code/dot2tex ) is installed, no image will be produced");
+  elif Filename(DirectoriesSystemPrograms(),"dot") = fail then
+    Info(InfoWarning,1,"GraphViz ( http://www.graphviz.org ) is not installed. Latex will be used to produce images\n");
+  fi;
+  if Filename(DirectoriesSystemPrograms(),"dot2tex") = fail then
+    Info(InfoWarning,1,"dot2tex is not installed; graphviz will be used to produce images\n");
+  fi;
