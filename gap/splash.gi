@@ -26,6 +26,7 @@ function(arg)
   nc := Length(colors);
   return List([1 .. n], i -> colors[(i mod nc) + 1]);
 end);
+
 #########################################################################
 InstallGlobalFunction(Splash,
 function(string)
@@ -48,9 +49,11 @@ local pdfname, extension, filename,log;
   if IsExistingFile(pdfname) then RemoveFile(pdfname);fi;
   #based on the extension we do different things
   if extension = "dot" then
-    Exec(GRAPHVIZ ,filename, " > ", pdfname); #calling graphviz, this works only on UNIX machines
+    Exec(GRAPHVIZ ,filename, " > ", pdfname); 
+    #calling graphviz, this works only on UNIX machines
   elif extension = "tex" then
-    Process(DirectoryCurrent(),Filename(DirectoriesSystemPrograms(),LATEX),InputTextNone(),log,[ filename ]);
+    Process(DirectoryCurrent(),Filename(DirectoriesSystemPrograms(),LATEX),
+     InputTextNone(),log,[ filename ]);
   fi;
   if IsExistingFile(pdfname) then
     Exec(PDF_VIEWER, pdfname, " & ");                   
@@ -79,7 +82,8 @@ function(arg)
     opt := rec();
   else
     if not IsSubset(VizOptionsForSplash,RecNames( opt)) then 
-      Info(InfoViz,1,"The options ", Difference(RecNames(opt),VizOptionsForSplash)," have no efect\n");
+      Info(InfoViz,1,"The options ", Difference(RecNames(opt),
+       VizOptionsForSplash)," have no effect.");
     fi;
   fi;
   dotstring := First(arg, k -> IsString(k));
@@ -96,6 +100,7 @@ function(arg)
   else
     path := "~/";
   fi;
+  
   #directory
   if IsBound(opt.directory) then
     if not opt.directory in DirectoryContents(path) then
@@ -114,26 +119,20 @@ function(arg)
   fi;
   #
   Info(InfoViz,1,"The temporary directory used is: ", dir,"\n");
+  
   #file
   if IsBound(opt.file) then
     file := opt.file;
   else
     file := "vizpicture";
   fi;
+  
   #viewer
   if IsBound(opt.viewer) then
     viewer := opt.viewer;
-  fi;
-  if not IsBound(opt.viewer) or
-     Filename(DirectoriesSystemPrograms(),viewer) = "fail" then
-    if ARCH_IS_UNIX( ) then
-      viewers := ["xpdf","xdg-open","evince", "okular", "gv"];
-    elif ARCH_IS_WINDOWS( ) then
-      viewers := ["xpdf","evince", "okular", "gv"];
-    elif ARCH_IS_MAC_OS_X( ) then
-      viewers := ["xpdf","open","evince", "okular", "gv"];
-    fi;
-    viewer := First(viewers, v -> Filename(DirectoriesSystemPrograms(),v)<>fail);
+  else 
+    viewer := First(VizViewers, x -> 
+     Filename(DirectoriesSystemPrograms(),x)<>fail);
   fi;
 
   # latex

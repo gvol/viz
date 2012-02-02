@@ -14,12 +14,12 @@ ReadPackage("viz/gap/utils.gi");
 ## In particular, when the help viwer is capable of reading pdfs, is should be used 
 ## as default.
 #VizViewers := ["xpdf","evince", "okular", "gv"];
-    if ARCH_IS_UNIX( ) then
+    if ARCH_IS_MAC_OS_X( ) then
+      VizViewers := ["xpdf","open","evince", "okular", "gv"];
+    elif ARCH_IS_UNIX( ) then
       VizViewers := ["xpdf","xdg-open","evince", "okular", "gv"];
     elif ARCH_IS_WINDOWS( ) then
       VizViewers := ["xpdf","evince", "okular", "gv"];
-    elif ARCH_IS_MAC_OS_X( ) then
-      VizViewers := ["xpdf","open","evince", "okular", "gv"];
     fi;
 
 if First(VizViewers, v -> Filename(DirectoriesSystemPrograms(),v) <> fail)= fail then
