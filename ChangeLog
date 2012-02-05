@@ -1,12 +1,13 @@
+0.2.4
+	Added util function: List2CommaSeparatedString. Bugfix in Splash.
 0.2.3
         Declared an InfoClass InfoViz
         Added Splash_MD (to be merged with Splash)
         Added various global variables. Its main use is in the options.
-        Added functions to deal with options for colors 
+        Added functions to deal with options for colors
         Added a function to process options for graphs
-        Added a function to produce a string containing the dot code to draw a (right) 
-             Cayley Graph. 
-         
+        Added a function to produce a string containing the dot code to draw a (right)
+             Cayley Graph.
 
 0.2.2
 	Added options to DotDClasses
