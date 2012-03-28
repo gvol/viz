@@ -153,6 +153,8 @@ function(arg)
     edge_labels := [];
   elif opt.edge_labels = "numbers" then
     edge_labels := [1..len];
+  else
+    edge_labels := opt.edge_labels; # the user may give the labels
   fi;
 
   ####node_labels
@@ -162,6 +164,8 @@ function(arg)
     node_labels := elts;
   elif opt.node_labels = "none" then
     node_labels := [];
+  else
+    node_labels := opt.node_labels; # the user may give the labels
   fi;
   ####### end of process labels #######    
 

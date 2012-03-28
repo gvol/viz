@@ -7,7 +7,7 @@
 <TitlePage>
   <Title>The <Package>Viz</Package> Package</Title>
 
-  <Version>Version 0.1.x</Version>
+  <Version>Version 0.2.x</Version>
  
   <Author>Manuel Delgado <Email>mdelgado@fc.up.pt</Email></Author>
   <Author>Attila Egri-Nagy <Email>attila@egri-nagy.hu</Email></Author>
@@ -18,7 +18,7 @@
 
   <Colophon>
   This manual describes the &GAP; 4.5 package <Package>Viz</Package> version
-  0.1.x for visualising and creating publication quality diagrams of GAP objects.
+  0.2.x for visualising and creating publication quality diagrams of GAP objects.
   </Colophon>
 
   <Acknowledgements>
