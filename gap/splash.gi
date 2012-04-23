@@ -5,7 +5,7 @@
 # The output is the duplicates free concatenation of both lists.
 # (Frequently the output is just a reordering of ColorsForViz.)
 ####
-#### has been placed in th .gd file, since it is used therex
+#### has been placed in th .gd file, since it is used there
 ####
 #InstallGlobalFunction(ReorderColorsForViz,
 #function(arg)
@@ -29,11 +29,16 @@ end);
 
 #########################################################################
 InstallGlobalFunction(Splash,
-function(string)
-local pdfname, extension, filename,log;
+function(arg)
+  local string, filename, log, extension, pdfname;
+  string := arg[1];
+  if Length(arg) > 1 then
+    filename := arg[2];
+  else
+    #due to LaTeX's security feature it can only work in the current directory
+    filename := "_tmp_viz_splash";
+  fi;
 
-  #due to LaTeX's security feature it can only work in the current directory
-  filename := "_tmp_viz_splash";
   log := OutputTextFile(Concatenation(filename, ".gaplog"),true);
   # This might fail for plain TeX or ConTeXt etc.  But so would using LATEX blindly
   if PositionSublist(string, "documentclass") <> fail then
@@ -53,8 +58,15 @@ local pdfname, extension, filename,log;
     Exec(GRAPHVIZ ,filename, " > ", pdfname);
     #calling graphviz, this works only on UNIX machines
   elif extension = "tex" then
-    Process(DirectoryCurrent(),Filename(DirectoriesSystemPrograms(),LATEX),
-     InputTextNone(),log,[ filename ]);
+    if '/' in filename then
+      # Run LaTeX in the same directory as the file
+      d := Positions(filename,'/');
+      d := Directory(filename{[1..d[Length(d)]]});
+    else
+      d := DirectoryCurrent();
+    fi;
+    Process(d,Filename(DirectoriesSystemPrograms(),LATEX),
+            InputTextNone(),log,[ filename ]);
   fi;
   if IsExistingFile(pdfname) then
     Exec(PDF_VIEWER, pdfname, " & ");
