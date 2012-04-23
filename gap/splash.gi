@@ -5,9 +5,9 @@
 # The output is the duplicates free concatenation of both lists.
 # (Frequently the output is just a reordering of ColorsForViz.)
 ####
-#### has been placed in th .gd file, since it is used therex 
+#### has been placed in th .gd file, since it is used therex
 ####
-#InstallGlobalFunction(ReorderColorsForViz, 
+#InstallGlobalFunction(ReorderColorsForViz,
 #function(arg)
 #  if Length(arg) = 1 then
 #    return DuplicateFreeList(Concatenation(arg[1],ColorsForViz));
@@ -17,8 +17,8 @@
 #end);
 ##########################################################################
 # The input is a list of colors and an integer <n>
-# The output is a list of length <n> where the list of colors is repeated 
-InstallGlobalFunction(ReuseVizColors, 
+# The output is a list of length <n> where the list of colors is repeated
+InstallGlobalFunction(ReuseVizColors,
 function(arg)
   local   n,  colors,  nc;
   n := First(arg, k->IsInt(k));
@@ -31,14 +31,15 @@ end);
 InstallGlobalFunction(Splash,
 function(string)
 local pdfname, extension, filename,log;
-  
+
   #due to LaTeX's security feature it can only work in the current directory
   filename := "_tmp_viz_splash";
   log := OutputTextFile(Concatenation(filename, ".gaplog"),true);
-  if PositionSublist(string, "tikz") <> fail then
-      extension := "tex";
+  # This might fail for plain TeX or ConTeXt etc.  But so would using LATEX blindly
+  if PositionSublist(string, "documentclass") <> fail then
+    extension := "tex";
   else
-      extension := "dot";
+    extension := "dot";
   fi;
 
   pdfname := Concatenation(filename, ".pdf");
@@ -49,14 +50,14 @@ local pdfname, extension, filename,log;
   if IsExistingFile(pdfname) then RemoveFile(pdfname);fi;
   #based on the extension we do different things
   if extension = "dot" then
-    Exec(GRAPHVIZ ,filename, " > ", pdfname); 
+    Exec(GRAPHVIZ ,filename, " > ", pdfname);
     #calling graphviz, this works only on UNIX machines
   elif extension = "tex" then
     Process(DirectoryCurrent(),Filename(DirectoriesSystemPrograms(),LATEX),
      InputTextNone(),log,[ filename ]);
   fi;
   if IsExistingFile(pdfname) then
-    Exec(PDF_VIEWER, pdfname, " & ");                   
+    Exec(PDF_VIEWER, pdfname, " & ");
   else
     Print("#E PDF file is not produced!\n");
   fi;
@@ -65,12 +66,12 @@ end
 );
 #############################################################################
 # Splash_MD ... to be merged with Splash
-# the input is 
+# the input is
 # * a record of options (may not be present) and
 # * a string (dot) or a function that applied to the ramaining argument produces a dot string
 InstallGlobalFunction(Splash_MD,
 function(arg)
-  local   opt,  dotstring,  f,  s,  path,  dir,  tdir,  file,  viewer,  tikz,  
+  local   opt,  dotstring,  f,  s,  path,  dir,  tdir,  file,  viewer,  tikz,
           filetype,  command;
 
   ##########
@@ -81,7 +82,7 @@ function(arg)
   if opt = fail then
     opt := rec();
   else
-    if not IsSubset(VizOptionsForSplash,RecNames( opt)) then 
+    if not IsSubset(VizOptionsForSplash,RecNames( opt)) then
       Info(InfoViz,1,"The options ", Difference(RecNames(opt),
        VizOptionsForSplash)," have no effect.");
     fi;
@@ -92,7 +93,7 @@ function(arg)
     s := First(arg, k -> IsSemigroup(k));
     dotstring := f(s);
   fi;
-  
+
   # begin options
   #path
   if IsBound(opt.path) then
@@ -100,7 +101,7 @@ function(arg)
   else
     path := "~/";
   fi;
-  
+
   #directory
   if IsBound(opt.directory) then
     if not opt.directory in DirectoryContents(path) then
@@ -119,19 +120,19 @@ function(arg)
   fi;
   #
   Info(InfoViz,1,"The temporary directory used is: ", dir,"\n");
-  
+
   #file
   if IsBound(opt.file) then
     file := opt.file;
   else
     file := "vizpicture";
   fi;
-  
+
   #viewer
   if IsBound(opt.viewer) then
     viewer := opt.viewer;
-  else 
-    viewer := First(VizViewers, x -> 
+  else
+    viewer := First(VizViewers, x ->
      Filename(DirectoriesSystemPrograms(),x)<>fail);
   fi;
 
@@ -152,22 +153,22 @@ function(arg)
       filetype := "svg";
     fi;
   fi;
-   
+
   ######################
   if tikz then
     FileString(Concatenation(dir,file,".dot"),dotstring);
 
-    command := Concatenation("dot2tex -ftikz ",dir,file,".dot"," > ", dir,file,".tex"); 
+    command := Concatenation("dot2tex -ftikz ",dir,file,".dot"," > ", dir,file,".tex");
     Exec(command);
-    command := Concatenation("cd ",dir,"; ","pdflatex ",dir,file, " 2>/dev/null 1>/dev/null"); 
-    Exec(command); 
+    command := Concatenation("cd ",dir,"; ","pdflatex ",dir,file, " 2>/dev/null 1>/dev/null");
+    Exec(command);
 
     Exec (Concatenation(viewer, " ",dir,file,".pdf 2>/dev/null 1>/dev/null &"));
-    return;     
+    return;
   fi;
 
   FileString(Concatenation(dir,file,".dot"),dotstring);
-  command := Concatenation("dot -T",filetype," ",dir,file,".dot"," -o ", dir,file,".",filetype); 
+  command := Concatenation("dot -T",filetype," ",dir,file,".dot"," -o ", dir,file,".",filetype);
   Exec(command);
   Exec (Concatenation(viewer, " ",dir,file,".",filetype," 2>/dev/null 1>/dev/null &"));
   return;
@@ -182,12 +183,12 @@ end);
 # to be the ranges of the first positive integers. Different labels may have to
 # be treated for each particular case.
 #########################################################################
-# The input is an integer, the number of nodes, and a list <list> giving 
+# The input is an integer, the number of nodes, and a list <list> giving
 #partial information on the shape and/or color of some nodes.
 #
-#Each sublist in <list> is a triple of the form [[nodes],shape,color] 
+#Each sublist in <list> is a triple of the form [[nodes],shape,color]
 #
-# Note that this function is mainly used when the option "highlight" occurs   
+# Note that this function is mainly used when the option "highlight" occurs
 InstallGlobalFunction(TreatNodeData,
 function(n,list)
   local   nodes,  i,  node,  triple;
@@ -202,7 +203,7 @@ function(n,list)
 #shapes are to be assigned to the same node
           node[2] := NodeShapesForViz[
                              (Position(NodeShapesForViz,node[2]) +
-                              Position(NodeShapesForViz,triple[2]) mod 
+                              Position(NodeShapesForViz,triple[2]) mod
                               Length(NodeShapesForViz)) +1];
         fi;
         if node[3] = "" then
@@ -211,9 +212,9 @@ function(n,list)
 #colors are to be assigned to the same node
           node[3] := ColorsForViz[
                              (Position(ColorsForViz,node[3]) +
-                              Position(ColorsForViz,triple[3]) mod 
+                              Position(ColorsForViz,triple[3]) mod
                               Length(ColorsForViz)) +1];
-        fi;       
+        fi;
       fi;
     od;
     if node[2] = "" then
@@ -223,6 +224,6 @@ function(n,list)
       node[3] := VizDefaultNodeFillColor;
     fi;
     Append(nodes,[node]);
-  od;  
+  od;
   return nodes;
 end);
