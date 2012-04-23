@@ -1,13 +1,14 @@
-# configuration variables with default values, 
-# .gaprc is a good place to override these values 
+# configuration variables with default values,
+# .gaprc is a good place to override these values
 
 #JDM these should be made into global variables...
 
-#PDF_VIEWER := "evince"; # the current Gnome document viewer on desktop UNIX 
-# machines
-#On mac used this:
+PDF_VIEWER := First(["xpdf","xdg-open","open","evince","okular","gv"],
+                    x -> Filename(DirectoriesSystemPrograms(),x)<>fail);
 
-PDF_VIEWER := "/Applications/Preview.app/Contents/MacOS/Preview";
+if PDF_VIEWER = fail then
+    Info(InfoWarning,1,"No known pdf viewer is installed, thus there will be no output of any image.\n");
+fi;
 
 GRAPHVIZ := "dot -Tpdf";
 
