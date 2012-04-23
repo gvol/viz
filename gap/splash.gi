@@ -30,7 +30,7 @@ end);
 #########################################################################
 InstallGlobalFunction(Splash,
 function(arg)
-  local string, filename, log, extension, pdfname;
+  local string, filename, log, extension, pdfname, d;
   string := arg[1];
   if Length(arg) > 1 then
     filename := arg[2];
