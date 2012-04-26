@@ -143,6 +143,7 @@ BindGlobal("VizDefaultOptionsRecordForGraphs",rec(
                 Reversed(ColorsForViz)),
         node_labels := VizDefaultNodeLabels,
         nodes_shape := VizDefaultNodesShape,
+        rankdir := "LR",           
         caption := false,
         highlight := false));
 

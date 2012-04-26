@@ -77,9 +77,9 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
   # Without options: Splash_MD(DotRightCayleyGraph(S));
 InstallGlobalFunction(DotRightCayleyGraph,
 function(arg)
-  local   S,  size,  elts,  opt,  o,  gens,  len,  highlight,  triple,  fs,  
-          nodes,  edge_labels,  node_labels,  p,  Zip,  gen_colors,  edges,  
-          dotstring,  edge,  node;
+  local S, size, elts, opt, o, gens, len, highlight, triple, fs, nodes, 
+        edge_labels, node_labels, p, Zip, gen_colors, edges, dotstring, edge, 
+        node, i, edg;
 
   S := arg[1];
   size := Size(S);
@@ -191,7 +191,7 @@ function(arg)
 
 
   gen_colors := Zip(gens, opt.edge_colors);
-  if edge_labels = [] then
+  if edge_labels = [] or opt.caption <> false then
     edges := Concatenation(List(gen_colors, y -> 
                      List(S, x->[Position(elts,x),,
                              Position(elts,x*y[1]),y[2]])));
@@ -202,6 +202,9 @@ function(arg)
                              Position(elts,x*y[1]),y[2]])));
   fi;
   dotstring := "/*dot*/ \n digraph CayleyGraph {\n";
+  if IsBound(opt.rankdir) then #by default, this attribut of dot is "TB"
+    Append(dotstring,Concatenation("rankdir = ",opt.rankdir,";\n"));
+  fi;
   for edge in edges do
     if not IsBound(edge[2]) then
       Append(dotstring,Concatenation(String(edge[1]), "->",    
@@ -223,7 +226,34 @@ function(arg)
     fi;
   od;
 
-          ######### caption.... not yet....        
+          ######### caption....   there is still work to do ...     
+#
+  if not IsBound(opt.caption) then 
+    for i in [1..len] do
+      # append a node with label corresponding to the label of generator i
+      # and a fictitious node
+      
+      # add an edge between both nodes (with [arrowhead=none]) and appropriate color
+      
+    od;
+  fi;
+  if opt.caption = "colors" then
+    if edge_labels = [] then
+      edg := gens;
+    else
+      edg := edge_labels;
+    fi;
+    Append(dotstring, "subgraph caption{\n");
+    for i in [1..len] do
+      Append(dotstring,Concatenation("capt",String(i), " [label = \"", String(edg[i]), "\", color=white];\n"));
+    od;
+    Append(dotstring,Concatenation("captextra [label = \"", "\", color=white];\n"));
+    for i in [1..len-1] do
+      Append(dotstring,Concatenation("capt",String(i), " -> ", "capt", String(i+1), " [color = \"", gen_colors[i][2], "\", arrowhead = none];\n"));
+    od;
+    Append(dotstring,Concatenation("capt",String(len), " -> ", "captextra [color = \"", gen_colors[len][2], "\", arrowhead = none];\n"));   
+    Append(dotstring, "};\n");
+  fi;
   Append(dotstring, "};\n");
 
   return dotstring;

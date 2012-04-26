@@ -52,15 +52,25 @@ function(opt)
   else
     processed_opt.nodes_shape := opt.nodes_shape;
   fi;
-  
-  #
+  ####rankdir
+  ## the default attribute of gaphviz is "TB": draws graphs from top to bottom
+  ## othes possibilities are "BT", "LR" or "RL". ("LR" is the default here in viz)
+  if not IsBound(opt.rankdir) then
+    processed_opt.rankdir := VizDefaultOptionsRecordForGraphs.rankdir;
+  else
+    processed_opt.rankdir := opt.rankdir;
+  fi; 
   #### caption
   # the possible values are: 
   # * false (no caption is introduced)
   # * edges (in the case of a Cayley Graph: displays the correspondence between
   #the labels of the edges and the generators)
+  # * colors (in the case of a Cayley Graph: displays the correspondence between
+  #the colors of the edges and the generators)
   if not IsBound(opt.caption) then
     processed_opt.caption := VizDefaultOptionsRecordForGraphs.caption;
+  else
+    processed_opt.caption := opt.caption;
   fi;
       
   return processed_opt;
