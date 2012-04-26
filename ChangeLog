@@ -1,27 +1,28 @@
+0.2.5
+        Few improvements: searching for pdf viewers in config, passing filename to Splash, enforcing coding standard for Emacs.
 0.2.4
-	Added util function: List2CommaSeparatedString. Bugfix in Splash.
+        Added util function: List2CommaSeparatedString. Bugfix in Splash.
 0.2.3
         Declared an InfoClass InfoViz
         Added Splash_MD (to be merged with Splash)
         Added various global variables. Its main use is in the options.
         Added functions to deal with options for colors
         Added a function to process options for graphs
-        Added a function to produce a string containing the dot code to draw a (right)
-             Cayley Graph.
+        Added a function to produce a string containing the dot code to draw a (right) Cayley Graph.
 
 0.2.2
-	Added options to DotDClasses
+        Added options to DotDClasses
 0.2.1
-	Fixing splashing. The argument now is the dot or tikz string.
+        Fixing splashing. The argument now is the dot or tikz string.
 0.2
-	Complete overhaul. Draw method replaced by more flexible Dot* and Tikz* functions.
+        Complete overhaul. Draw method replaced by more flexible Dot* and Tikz* functions.
 0.1.4
-	Extension loading mechanism added.
+        Extension loading mechanism added.
 0.1.3
-	Added drawgrp.g, it contains quick visualisation of permutations and groups.
+        Added drawgrp.g, it contains quick visualisation of permutations and groups.
 0.1.2
-	Adding tikz-based transformation visualisation (dots and crossing lines by James East).
+        Adding tikz-based transformation visualisation (dots and crossing lines by James East).
 0.1.1
-	Preparing Splash for accepting LaTeX output as well. Separating the ts drawing functions into drawts.g
+        Preparing Splash for accepting LaTeX output as well. Separating the ts drawing functions into drawts.g
 0.1
-	Initial upload, pieces of code from several sources.
+        Initial upload, pieces of code from several sources.
