@@ -77,8 +77,8 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
   # Without options: Splash_MD(DotRightCayleyGraph(S));
 InstallGlobalFunction(DotRightCayleyGraph,
 function(arg)
-  local   S,  size,  elts,  opt,  o,  useOne,  gens,  len,  highlight,  triple,  
-          fs,  nodes,  edge_labels,  node_labels,  Zip,  gen_colors,  edges,  
+  local   S,  size,  elts,  opt,  o,  gens,  len,  highlight,  triple,  fs,  
+          nodes,  edge_labels,  node_labels,  p,  Zip,  gen_colors,  edges,  
           dotstring,  edge,  node;
 
   S := arg[1];
@@ -156,7 +156,6 @@ function(arg)
   else
     edge_labels := opt.edge_labels; # the user may give the labels
   fi;
-
   ####node_labels
   if opt.node_labels = "numbers" then
     node_labels := [1..size];
@@ -164,8 +163,14 @@ function(arg)
     node_labels := elts;
   elif opt.node_labels = "none" then
     node_labels := [];
+  elif IsList(opt.node_labels) and opt.node_labels[1][2] in S then
+    # the user may give labels: a list of pairs of the form ["label",element]
+    node_labels := [];
+    for p in opt.node_labels do
+      node_labels[Position(elts,p[2])] := p[1];
+    od;
   else
-    node_labels := opt.node_labels; # the user may give the labels
+    node_labels := [];
   fi;
   ####### end of process labels #######    
 
@@ -208,12 +213,13 @@ function(arg)
     fi;
   od;
   #
-  #    Error("");
   for node in nodes do
-    if node_labels = [] then
+    if node_labels = [] or (not IsBound(node_labels[node[1]])) then
       Append(dotstring,Concatenation( String(node[1]), " [label=\"", "\",shape=\"",node[2], "\",style=filled, fillcolor=\"",node[3],"\"];\n"));
+    elif IsString(node_labels[node[1]]) then
+      Append(dotstring,Concatenation( String(node[1]), " [label=\"", node_labels[node[1]],"\",shape=\"",node[2], "\",style=filled, fillcolor=\"",node[3],"\"];\n"));
     else
-      Append(dotstring,Concatenation( String(node[1]), " [label=", String(node_labels[node[1]]),",shape=\"",node[2], "\",style=filled, fillcolor=\"",node[3],"\"];\n"));
+      Append(dotstring,Concatenation( String(node[1]), " [label=\"", String(node_labels[node[1]]),"\",shape=\"",node[2], "\",style=filled, fillcolor=\"",node[3],"\"];\n"));
     fi;
   od;
 
