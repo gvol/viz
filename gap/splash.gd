@@ -12,13 +12,13 @@ DeclareGlobalFunction("ReuseVizColors");
   
 #takes a string, tries to figure out whether it is Tikz or Dot
 #and processes accordingly and display
-DeclareGlobalFunction("Splash");
+#DeclareGlobalFunction("Splash");
 
 # the input is 
 # * a record of options (may not be present) and
 # * a string (dot) or a function that applied to the ramaining argument produces a dot string
 # processes and displays
-DeclareGlobalFunction("Splash_MD");
+DeclareGlobalFunction("Splash");
 
 #########################################################################
 # To draw a graph we need to specify:

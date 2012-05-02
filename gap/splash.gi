@@ -27,61 +27,12 @@ function(arg)
   return List([1 .. n], i -> colors[(i mod nc) + 1]);
 end);
 
-#########################################################################
-InstallGlobalFunction(Splash,
-function(arg)
-  local string, filename, log, extension, pdfname, d;
-  string := arg[1];
-  if Length(arg) > 1 then
-    filename := arg[2];
-  else
-    #due to LaTeX's security feature it can only work in the current directory
-    filename := "_tmp_viz_splash";
-  fi;
-
-  log := OutputTextFile(Concatenation(filename, ".gaplog"),true);
-  # This might fail for plain TeX or ConTeXt etc.  But so would using LATEX blindly
-  if PositionSublist(string, "documentclass") <> fail then
-    extension := "tex";
-  else
-    extension := "dot";
-  fi;
-
-  pdfname := Concatenation(filename, ".pdf");
-  filename := Concatenation(filename,".",extension);
-  #writing the string out to an actual file
-  FileString(filename, string);
-  #remove any previous splash
-  if IsExistingFile(pdfname) then RemoveFile(pdfname);fi;
-  #based on the extension we do different things
-  if extension = "dot" then
-    Exec(GRAPHVIZ ,filename, " > ", pdfname);
-    #calling graphviz, this works only on UNIX machines
-  elif extension = "tex" then
-    if '/' in filename then
-      # Run LaTeX in the same directory as the file
-      d := Positions(filename,'/');
-      d := Directory(filename{[1..d[Length(d)]]});
-    else
-      d := DirectoryCurrent();
-    fi;
-    Process(d,Filename(DirectoriesSystemPrograms(),LATEX),
-            InputTextNone(),log,[ filename ]);
-  fi;
-  if IsExistingFile(pdfname) then
-    Exec(PDF_VIEWER, pdfname, " & ");
-  else
-    Print("#E PDF file is not produced!\n");
-  fi;
-  CloseStream(log);
-end
-);
 #############################################################################
-# Splash_MD ... to be merged with Splash
+# Splash ... to be merged with Splash ... (the old version has been removed)
 # the input is
 # * a record of options (may not be present) and
 # * a string (dot) or a function that applied to the ramaining argument produces a dot string
-InstallGlobalFunction(Splash_MD,
+InstallGlobalFunction(Splash,
 function(arg)
   local   opt,  dotstring,  f,  s,  path,  dir,  tdir,  file,  viewer,  tikz,
           filetype,  command;
