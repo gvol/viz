@@ -84,8 +84,9 @@ function(arg)
   S := arg[1];
   size := Size(S);
   if size = 1 then
-    Print("The semigroup is trivial...\n");
-    return;
+    Info(InfoViz,1,"The semigroup is trivial...");
+    dotstring := "/*dot*/ \n digraph CayleyGraph {\n  0 };\n";
+    return dotstring;
   fi;
   elts := Elements(S);
 
@@ -251,7 +252,7 @@ function(arg)
     for i in [1..len-1] do
       Append(dotstring,Concatenation("capt",String(i), " -> ", "capt", String(i+1), " [color = \"", gen_colors[i][2], "\", arrowhead = none];\n"));
     od;
-    Append(dotstring,Concatenation("capt",String(len), " -> ", "captextra [color = \"", gen_colors[len][2], "\", arrowhead = none];\n"));   
+    Append(dotstring,Concatenation("capt",String(len), " -> ", "captextra [color = \"", gen_colors[len][2], "\", arrowhead = none];\n"));  
     Append(dotstring, "};\n");
   fi;
   Append(dotstring, "};\n");
