@@ -371,8 +371,8 @@ if not TestPackageAvailability("citrus", "0.6") = fail then
       opts:=rec(maximal:=false, number:=true);
     fi;
 
-    if not IsTransformationSemigroup(s) then
-      Error("the argument should be a trans. semigroup");
+    if not (IsTransformationSemigroup(s) or IsPartialPermSemigroup(s)) then 
+      Error("the argument should be a semigroup of transformations or partial perms");
       return fail;
     fi;
 
