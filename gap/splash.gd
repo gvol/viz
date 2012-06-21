@@ -146,13 +146,19 @@ BindGlobal("VizDefaultOptionsRecordForGraphs",rec(
         rankdir := "LR",           
         caption := false,
         highlight := false));
+########################################################################
+# a record containing the default values
+BindGlobal("VizDefaultOptionsRecordForDisplayingWithLatex",rec(
+        latexpoints := "11pt",
+        orientation := "landscape",
+        papersize := "a4paper"));
 
 ##########################################################################
 
 ########################################################################
 # the list of admissible options for splash (more precisely: the options 
 #that have some efect)
-BindGlobal("VizOptionsForSplash",["path","directory","file","viewer","tikz","filetype"]);
+BindGlobal("VizOptionsForSplash",["path","directory","file","viewer","tikz","filetype","latexpoints","latexorientation","latexpapersize"]);
 
 
 ######## The treatment of the viewers must be done in another way... 

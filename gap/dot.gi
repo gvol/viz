@@ -72,9 +72,9 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
   #S := Semigroup(Transformation( [ 2, 3, 4, 1, 5 ] ), Transformation( [ 1, 2, 4, 5, 5 ] ));;
   #dotstring:= DotRightCayleyGraph(S,rec(edge_labels:="letters",node_labels:="numbers",highlight:=[[Idempotents,[],"blue"],[MultiplicativeNeutralElement,"box","red"]]));;
   #
-  # The result can be viewed by executing: Splash_MD(dotstring);
+  # The result can be viewed by executing: Splash(dotstring);
   #
-  # Without options: Splash_MD(DotRightCayleyGraph(S));
+  # Without options: Splash(DotRightCayleyGraph(S));
 InstallGlobalFunction(DotRightCayleyGraph,
 function(arg)
   local S, size, elts, opt, o, gens, len, highlight, triple, fs, nodes, 

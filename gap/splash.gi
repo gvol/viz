@@ -34,8 +34,8 @@ end);
 # * a string (dot) or a function that applied to the ramaining argument produces a dot string
 InstallGlobalFunction(Splash,
 function(arg)
-  local   opt,  dotstring,  f,  s,  path,  dir,  tdir,  file,  viewer,  tikz,
-          filetype,  command;
+  local opt, dotstring, f, s, path, dir, tdir, file, viewer, tikz, filetype, i, 
+        latexstring, command;
 
   ##########
   # there are global warnings concerning the avaiability of software
@@ -115,14 +115,49 @@ function(arg)
     elif ARCH_IS_MAC_OS_X( ) then
       filetype := "svg";
     fi;
-  fi;
-
+  fi;  
   ######################
-  if tikz then
-    FileString(Concatenation(dir,file,".dot"),dotstring);
+  if tikz or dotstring{[1..5]}="%tikz" then
+    if dotstring{[1..5]}="%tikz" then #the string is a latex string
+      #process specific options
+      for i in RecNames(VizDefaultOptionsRecordForDisplayingWithLatex) do
+        if not IsBound(opt.(i)) then
+          opt.(i) := VizDefaultOptionsRecordForDisplayingWithLatex.(i);
+        fi;
+      od;
+      latexstring := "\\documentclass[";
+      for i in RecNames(VizDefaultOptionsRecordForDisplayingWithLatex) do
+        Append(latexstring,Concatenation(opt.(i),","));
+      od;
+      Append(latexstring,"]{article}\n");
+      Append(latexstring,"\\usepackage[vmargin=2cm,hmargin=2cm]{geometry}\n");
+      Append(latexstring,"\\usepackage[x11names, rgb]{xcolor}\n");
+ #     Append(latexstring,"\\usepackage[utf8]{inputenc}\n");
+      Append(latexstring,"\\usepackage{pgf}\n");
+      Append(latexstring,"\\usepackage{tikz}\n");
+      Append(latexstring,"\\usepgfmodule{plot}\n");
+      Append(latexstring,"\\usepgflibrary{plothandlers}\n");
+      Append(latexstring,"\\usetikzlibrary{shapes.geometric}\n");
+      Append(latexstring,"\\usetikzlibrary{shadings}\n");
+      Append(latexstring,"\\usepackage{amsmath}\n");
+      Append(latexstring,"\%\n");
+      Append(latexstring,"\\begin{document}\n");
+      Append(latexstring,"\\pagestyle{empty}\n");
+      Append(latexstring,"\\begin{center}\n");
+      Append(latexstring,Concatenation("\\input{",file,"1}\n"));
+      Append(latexstring,"\\end{center}\n");
+      Append(latexstring,"\\end{document}\n");
+      FileString(Concatenation(dir,file,".tex"),latexstring);
 
-    command := Concatenation("dot2tex -ftikz ",dir,file,".dot"," > ", dir,file,".tex");
-    Exec(command);
+      FileString(Concatenation(dir,file,"1.tex"),dotstring);
+    else
+
+      FileString(Concatenation(dir,file,".dot"),dotstring);
+
+      command := Concatenation("dot2tex -ftikz ",dir,file,".dot"," > ", dir,file,".tex");
+      Exec(command);
+    fi;
+
     command := Concatenation("cd ",dir,"; ","pdflatex ",dir,file, " 2>/dev/null 1>/dev/null");
     Exec(command);
 
