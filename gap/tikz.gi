@@ -3,41 +3,81 @@
 
 # please keep the file alphabetized.
 
-InstallGlobalFunction(TikzTransformation, 
-function(f)
-  local img, str, i;
-  
-  img := f![1];
-  str:=""; 
-  Append(str,"\\documentclass{minimal}\n\\usepackage{tikz}\n");
-  Append(str, "\\usetikzlibrary{automata,arrows, matrix, positioning}\n");
-  Append(str, "\\begin{document}\n\\tikzset{auto}\n");
-  Append(str, "\\begin{tikzpicture}\n");
-  Append(str, "\\tikzstyle{every state}=[minimum size=1pt,fill=black]\n");
-  Append(str,"\\node[state] (t1) {};\n");
-
-  for i in [2..Length(img)] do
-    Append(str, Concatenation("\\node[state] (t",String(i),") [right of=t",
-     String(i-1),"] {};\n"));
-
+# Drawing braid-like crossing diagrams for transformations.
+# In order to avoid coincidences of crossing points the threads
+# remain straight for different lengths.
+# ARGUMENTS
+# images - contains the list of images
+# e.g. the output of ImageListOfTransformation or ListPerm
+# height - the height of the diagram
+# width - the width of the diagram
+# minmid - minimum middle are for crossings
+# EXAMPLE
+# Splash(TikzImageList(ImageListOfTransformation(RandomTransformation(8)),
+#        rec(width:=8,height:=6,nemtom:=3)));
+InstallGlobalFunction(TikzImageList,
+function(arg)
+  local str,i,h,d,n,dist,w,minmid,images;
+  #the first argument is compulsory, the list of images
+  images := arg[1];
+  n := Size(images);
+  #setting the parameters
+  if IsBound(arg[2]) and "width" in RecNames(arg[2]) then
+    w := arg[2].width;
+  else
+    w := n; # default: the number of points
+  fi;
+  if IsBound(arg[2]) and "height" in RecNames(arg[2]) then
+    h := arg[2].height;
+  else
+    h := w/2; # default: half the width
+  fi;
+  if IsBound(arg[2]) and "minmid" in RecNames(arg[2]) then
+    minmid := arg[2].minmid;
+  else
+    minmid := 2*h/3; # default: two thirds of height
+  fi;
+  #calculating derived values
+  dist := w/n; #distance between the nodes
+  d := ((h-minmid)/2)/n; #the unit delay before curving to destination
+  #building the string
+  str:="";
+  Append(str, "%tikz\n");#tagging the source to indicate tikz code
+  Append(str,"\\begin{tikzpicture}\n");
+  #NODES
+  for i in [1..Length(images)] do
+    #drawing the top nodes
+    Append(str, Concatenation("\\node (t",String(i),
+            ") at (", String(i*dist),",",String(h),") {$\\bullet$};\n"));
+    #drawing the bottom nodes
+    Append(str, Concatenation("\\node (b",String(i),
+            ") at (", String(i*dist),",0) {$\\bullet$};\n"));
+    #drawing the top middle nodes
+    Append(str, Concatenation("\\node (mt",String(i),
+            ") at (", String(i*dist),",",String(h-i*d),") {};\n"));
+    #drawing the bottom mid nodes
+    Append(str, Concatenation("\\node (mb",String(i),
+            ") at (", String(i*dist),",",String(i*d),") {};\n"));
   od;
+  #drawing the edges' straight initial segments
+  for i in [1..Length(images)] do
+    Append(str, Concatenation("\\path ",
+            "(t", String(i),".center) edge",
+            "(mt", String(i),".center);\n"));
 
-  Append(str,"\\node[state] (d1) [below of=t1]{};\n");
-  
-  for i in [2..Length(img)] do
-    Append(str, Concatenation("\\node[state] (d", String(i), ") [right of=d",
-     String(i-1), "] {};\n"));
+    Append(str, Concatenation("\\draw ",
+            "(mt", String(i),".center) to [out=-90,in=90] ",
+            "(mb", String(images[i]),".center);\n"));
   od;
-  
-  for i in [1..Length(img)] do
-    Append(str, Concatenation("\\path (t", String(i), ") edge (d",
-     String(i^f),");\n"));
+  #drawing the actual crossings
+  for i in DuplicateFreeList(images) do
+    Append(str, Concatenation("\\path ",
+            "(mb", String(i),".center) edge",
+            "(b", String(i),".center);\n"));
   od;
-
-  Append(str,"\\end{tikzpicture}\n\\end{document}");
+  Append(str,"\\end{tikzpicture}\n");
   return str;
 end);
-
 ########
 
 # Usage: child list and labels (optional)

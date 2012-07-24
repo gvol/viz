@@ -14,16 +14,16 @@ PackageName := "viz",
 
 Subtitle := "viz",
 
-Version := "0.2.5",
+Version := "0.2.6",
 
-Date := "26/04/2012",
+Date := "24/07/2012",
 
 ArchiveURL := "http://bitbucket.org/zen154115/viz",
 
 ArchiveFormats := ".tar.gz",
 
 Persons := [
- rec( 
+ rec(
     LastName      := "Delgado",
     FirstNames    := "Manuel",
     IsAuthor      := true,
@@ -36,7 +36,7 @@ Persons := [
     Place         := "Porto, Portugal",
     Institution   := "University of Porto"
   ),
-  rec( 
+  rec(
     LastName      := "Egri-Nagy",
     FirstNames    := "Attila",
     IsAuthor      := true,
@@ -49,7 +49,7 @@ Persons := [
     Place         := "Sydney, NSW, Australia",
     Institution   := "UWS"
   ),
-  rec( 
+  rec(
     LastName      := "Mitchell",
     FirstNames    := "J. D.",
     IsAuthor      := true,
@@ -58,12 +58,12 @@ Persons := [
     WWWHome       := "http://tinyurl.com/jdmitchell",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
                        " Scotland"] ),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
   ),
-  rec( 
+  rec(
     LastName      := "Pfeiffer",
     FirstNames    := "Markus",
     IsAuthor      := true,
@@ -72,7 +72,7 @@ Persons := [
     WWWHome       := "http://www-groups.mcs.st-and.ac.uk/~markusp/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
-                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,", 
+                       " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
                        " Scotland"] ),
     Place         := "St Andrews",
     Institution   := "University of St Andrews"
@@ -85,8 +85,8 @@ README_URL := "nowhere yet",
 
 PackageInfoURL := "nowhere yet",
 
-AbstractHTML := 
-  "<span class=\"pkgname\">Viz</span> is  a <span class=\"pkgname\">GAP</span> package \
+AbstractHTML :=
+  "<span class=\"pkgname\">Viz</span> is  a <span class=\"pkgname\">GAP</span> \
    package for drawing GAP objects.",
 
 PackageWWWHome := "http://bitbucket.org/zen154115/viz/",
@@ -107,7 +107,7 @@ Dependencies := rec(
  GAP := ">=4.5",
  NeededOtherPackages := [["GAPDoc", ">=1.4"]],
  SuggestedOtherPackages := [["citrus", ">=0.9"] ],
- ExternalConditions := [], 
+ ExternalConditions := [],
 ),
 
 AvailabilityTest := ReturnTrue,
@@ -118,4 +118,3 @@ TestFile := "test/test.g",
 
 Keywords := ["visualisation"]
 ));
-
