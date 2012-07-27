@@ -335,7 +335,7 @@ if not TestPackageAvailability("citrus", "0.6") = fail then
 
     for l in LClasses(d) do
       Append(str, "<TR>");
-      if not IsRegularLClass(l) then
+      if not IsRegularClass(l) then
         for j in [1..NrRClasses(d)] do
           Append(str, "<TD></TD>");
         od;
@@ -403,7 +403,7 @@ if not TestPackageAvailability("citrus", "0.6") = fail then
 
       for l in LClasses(d) do
         Append(str, "<TR>");
-        if not IsRegularLClass(l) then
+        if not IsRegularClass(l) then
           for j in [1..NrRClasses(d)] do
             Append(str, "<TD CELLPADDING=\"10\"> </TD>");
           od;
