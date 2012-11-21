@@ -317,7 +317,7 @@ fi;
 
 #############################################################################
 
-if not TestPackageAvailability("citrus", "0.6") = fail then
+if not TestPackageAvailability("semigroups", "0.6") = fail then
   InstallGlobalFunction(DotDClass,
   function(d)
     local str, h, l, j, x;
@@ -359,7 +359,7 @@ fi;
 
 #############################################################################
 
-if not TestPackageAvailability("citrus", "0.6") = fail then
+if not TestPackageAvailability("semigroups", "1.0") = fail then
   InstallGlobalFunction(DotDClasses,
   function(arg)
     local s, opts, str, i, gp, h, rel, j, k, d, l, x;
@@ -371,10 +371,10 @@ if not TestPackageAvailability("citrus", "0.6") = fail then
       opts:=rec(maximal:=false, number:=true);
     fi;
 
-    if not (IsTransformationSemigroup(s) or IsPartialPermSemigroup(s)) then 
-      Error("the argument should be a semigroup of transformations or partial perms");
-      return fail;
-    fi;
+    #if not (IsTransformationSemigroup(s) or IsPartialPermSemigroup(s)) then 
+    #  Error("the argument should be a semigroup of transformations or partial perms");
+    #  return fail;
+    #fi;
 
     str:="";
     Append(str, "digraph  DClasses {\n");
