@@ -534,16 +534,33 @@ end);
 # JDM's code
 
 InstallGlobalFunction(DotPoset,
-function(poset)
+function(arg)
   local rel, str, j, i, k;
 
-  rel:=List([1..Length(poset)], x-> Filtered(poset[x], y-> not x=y));
+  rel:=List([1..Length(arg[1])], x-> Filtered(arg[1][x], y-> not x=y));
   str:="";
 
-  if Length(poset)<40 then
+  if Length(arg[1])<40 then
     Append(str,  "graph graphname {\n     node [shape=circle]\n");
   else
     Append(str,  "graph graphname {\n     node [shape=point]\n");
+  fi;
+
+  if IsBound(arg[2]) and IsRecord(arg[2]) and "highlight" in RecNames(arg[2])
+    then 
+    if IsList(arg[2].highlight) and ForAll(arg[2].highlight, IsPosInt) then 
+      for i in arg[2].highlight do
+        Append(str, Concatenation(String(i), 
+         "[style=filled, fillcolor=yellow]"));
+      od;
+    elif IsFunction(arg[2].highlight) then 
+      for i in [1..Length(rel)] do 
+        if arg[2].highlight(i) then 
+          Append(str, Concatenation(String(i), 
+          "[style=filled, fillcolor=yellow]"));
+        fi;
+      od;
+    fi;
   fi;
 
   for i in [1..Length(rel)] do
