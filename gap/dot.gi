@@ -104,7 +104,7 @@ function(arg)
   ## <highligth> options and some labeling options
   #
   
-  gens := Generators(S); #monoid or semigroup generators according to whether S is a monoid or a semigroup.
+  gens := GeneratorsOfSemigroup(S); #monoid or semigroup generators according to whether S is a monoid or a semigroup.
   len := Length(gens);  
   #
   ## highlight
