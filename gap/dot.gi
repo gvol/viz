@@ -66,15 +66,18 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
   end);
   
   ########################################################################
-  #Outputs a dot string for the (right) Cayley graph of a semigroup (or a monoid)
-  # The input is a semigroup and a record with options (which may not be given)
-  #Example: 
-  #S := Semigroup(Transformation( [ 2, 3, 4, 1, 5 ] ), Transformation( [ 1, 2, 4, 5, 5 ] ));;
-  #dotstring:= DotRightCayleyGraph(S,rec(edge_labels:="letters",node_labels:="numbers",highlight:=[[Idempotents,[],"blue"],[MultiplicativeNeutralElement,"box","red"]]));;
+  #Outputs a dot string for the (right) Cayley graph of a semigroup (or a
+  #monoid) The input is a semigroup and a record with options (which may not be
+  #given) Example: S := Semigroup(Transformation( [ 2, 3, 4, 1, 5 ] ),
+  #Transformation( [ 1, 2, 4, 5, 5 ] ));; dotstring:=
+  #DotRightCayleyGraph(S,rec(edge_labels:="letters",node_labels:="numbers",   
+  #highlight:=[[Idempotents,[],"blue"],[MultiplicativeNeutralElement,"box",
+  #"red"]]));;
   #
   # The result can be viewed by executing: Splash(dotstring);
   #
   # Without options: Splash(DotRightCayleyGraph(S));
+
 InstallGlobalFunction(DotRightCayleyGraph,
 function(arg)
   local S, size, elts, opt, o, gens, len, highlight, triple, fs, nodes, 
@@ -357,91 +360,6 @@ if not TestPackageAvailability("semigroups", "0.6") = fail then
   end);
 fi;
 
-#############################################################################
-
-if not TestPackageAvailability("semigroups", "1.0") = fail then
-  InstallGlobalFunction(DotDClasses,
-  function(arg)
-    local s, opts, str, i, gp, h, rel, j, k, d, l, x;
-
-    s:=arg[1];
-    if Length(arg)>1 then
-      opts:=arg[2];
-    else
-      opts:=rec(maximal:=false, number:=true);
-    fi;
-
-    #if not (IsTransformationSemigroup(s) or IsPartialPermSemigroup(s)) then 
-    #  Error("the argument should be a semigroup of transformations or partial perms");
-    #  return fail;
-    #fi;
-
-    str:="";
-    Append(str, "digraph  DClasses {\n");
-    Append(str, "node [shape=plaintext]\n");
-    Append(str, "edge [color=red,arrowhead=none]\n");
-    i:=0;
-
-    for d in DClasses(s) do
-      i:=i+1;
-      Append(str, String(i));
-      Append(str, " [shape=box style=dotted label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
-      Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\"");
-      Append(str, Concatenation(" PORT=\"", String(i), "\">\n"));
-
-      if opts!.number then
-        Append(str, "<TR BORDER=\"0\"><TD COLSPAN=\"");
-        Append(str, String(NrRClasses(d)));
-        Append(str, "\" BORDER=\"0\" >");
-        Append(str, String(i));
-        Append(str, "</TD></TR>");
-      fi;
-
-      if opts!.maximal and IsRegularDClass(d) then
-         gp:=StructureDescription(GroupHClass(d));
-      fi;
-
-      for l in LClasses(d) do
-        Append(str, "<TR>");
-        if not IsRegularClass(l) then
-          for j in [1..NrRClasses(d)] do
-            Append(str, "<TD CELLPADDING=\"10\"> </TD>");
-          od;
-        else
-          h:=HClasses(l);
-          for x in h do
-            if IsGroupHClass(x) then
-              if opts!.maximal then
-                Append(str, Concatenation("<TD BGCOLOR=\"grey\">", gp, "</TD>"));
-              else
-                Append(str, "<TD BGCOLOR=\"grey\">*</TD>");
-              fi;
-            else
-              Append(str, "<TD></TD>");
-            fi;
-          od;
-        fi;
-        Append(str, "</TR>\n");
-      od;
-      Append(str, "</TABLE>>];\n");
-    od;
-
-    rel:=PartialOrderOfDClasses(s);
-    rel:=List([1..Length(rel)], x-> Filtered(rel[x], y-> not x=y));
-
-    for i in [1..Length(rel)] do
-      j:=Difference(rel[i], Union(rel{rel[i]})); i:=String(i);
-      for k in j do
-        k:=String(k);
-        Append(str, Concatenation(i, " -> ", k, "\n"));
-      od;
-    od;
-
-    Append(str, " }");
-
-    return str;
-  end);
-fi;
 
 # Usage: a list of adjacencies of a directed graph (as pos. ints)
 # For example, [[1,2],[3],[4,5,6], [], [], []] indicates that
