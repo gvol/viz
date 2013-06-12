@@ -318,49 +318,6 @@ if not TestPackageAvailability("orb", "3.7")=fail then
   end);
 fi;
 
-#############################################################################
-
-if not TestPackageAvailability("semigroups", "0.6") = fail then
-  InstallGlobalFunction(DotDClass,
-  function(d)
-    local str, h, l, j, x;
-
-    if not IsGreensClassOfTransSemigp(d) or not IsGreensDClass(d) then
-      Error("the argument should be a D-class of a trans. semigroup.");
-    fi;
-
-    str:="";
-    Append(str, "digraph  DClasses {\n");
-    Append(str, "node [shape=plaintext]\n");
-
-    Append(str, "1 [label=<\n<TABLE BORDER=\"0\" CELLBORDER=\"1\"");
-    Append(str, " CELLPADDING=\"10\" CELLSPACING=\"0\">\n");
-
-    for l in LClasses(d) do
-      Append(str, "<TR>");
-      if not IsRegularClass(l) then
-        for j in [1..NrRClasses(d)] do
-          Append(str, "<TD></TD>");
-        od;
-      else
-        h:=HClasses(l);
-        for x in h do
-          if IsGroupHClass(x) then
-            Append(str, "<TD>*</TD>");
-          else
-            Append(str, "<TD></TD>");
-          fi;
-        od;
-      fi;
-      Append(str, "</TR>\n");
-    od;
-    Append(str, "</TABLE>>];\n}");
-
-    return str;
-  end);
-fi;
-
-
 # Usage: a list of adjacencies of a directed graph (as pos. ints)
 # For example, [[1,2],[3],[4,5,6], [], [], []] indicates that
 # 1->1, 1->2, 2->3, 3->4, 3->5, 3->6.
