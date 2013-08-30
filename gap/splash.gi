@@ -18,6 +18,7 @@
 ##########################################################################
 # The input is a list of colors and an integer <n>
 # The output is a list of length <n> where the list of colors is repeated
+
 InstallGlobalFunction(ReuseVizColors,
 function(arg)
   local   n,  colors,  nc;
@@ -32,10 +33,11 @@ end);
 # the input is
 # * a record of options (may not be present) and
 # * a string (dot) or a function that applied to the ramaining argument produces a dot string
+
 InstallGlobalFunction(Splash,
 function(arg)
-  local opt, dotstring, f, s, path, dir, tdir, file, viewer, tikz, filetype, i, 
-        latexstring, command;
+  local opt, dotstring, f, s, path, dir, tdir, file, viewer, tikz, filetype, 
+        preamble, closing, latexstring, command;
 
   ##########
   # there are global warnings concerning the avaiability of software
@@ -69,7 +71,8 @@ function(arg)
   if IsBound(opt.directory) then
     if not opt.directory in DirectoryContents(path) then
       Exec(Concatenation("mkdir ",path,opt.directory));
-      Info(InfoViz, 1, "The temporary directory ",path,opt.directory, " has been created");
+      Info(InfoViz, 1, "The temporary directory ",path,opt.directory, 
+       " has been created");
     fi;
     dir := Concatenation(path,opt.directory,"/");
   elif IsBound(opt.path) then
@@ -120,45 +123,64 @@ function(arg)
   if tikz or dotstring{[1..5]}="%tikz" then
     if dotstring{[1..5]}="%tikz" then #the string is a latex string
       #process specific options
-      for i in RecNames(VizDefaultOptionsRecordForDisplayingWithLatex) do
-        if not IsBound(opt.(i)) then
-          opt.(i) := VizDefaultOptionsRecordForDisplayingWithLatex.(i);
-        fi;
-      od;
-      latexstring := "\\documentclass[";
-      for i in RecNames(VizDefaultOptionsRecordForDisplayingWithLatex) do
-        Append(latexstring,Concatenation(opt.(i),","));
-      od;
-      Append(latexstring,"]{article}\n");
-      Append(latexstring,"\\usepackage[vmargin=2cm,hmargin=2cm]{geometry}\n");
-      Append(latexstring,"\\usepackage[x11names, rgb]{xcolor}\n");
- #     Append(latexstring,"\\usepackage[utf8]{inputenc}\n");
-      Append(latexstring,"\\usepackage{pgf}\n");
-      Append(latexstring,"\\usepackage{tikz}\n");
-      Append(latexstring,"\\usepgfmodule{plot}\n");
-      Append(latexstring,"\\usepgflibrary{plothandlers}\n");
-      Append(latexstring,"\\usetikzlibrary{shapes.geometric}\n");
-      Append(latexstring,"\\usetikzlibrary{shadings}\n");
-      Append(latexstring,"\\usepackage{amsmath}\n");
-      Append(latexstring,"\%\n");
-      Append(latexstring,"\\begin{document}\n");
-      Append(latexstring,"\\pagestyle{empty}\n");
-      Append(latexstring,"\\begin{center}\n");
-      Append(latexstring,Concatenation("\\input{",file,"1}\n"));
-      Append(latexstring,"\\end{center}\n");
-      Append(latexstring,"\\end{document}\n");
+      #for i in RecNames(VizDefaultOptionsRecordForDisplayingWithLatex) do
+      #  if not IsBound(opt.(i)) then
+      #    opt.(i) := VizDefaultOptionsRecordForDisplayingWithLatex.(i);
+      #  fi;
+      #od;
+    #  latexstring := "\\documentclass[";
+    #  for i in RecNames(VizDefaultOptionsRecordForDisplayingWithLatex) do
+    #    Append(latexstring,Concatenation(opt.(i),","));
+    #  od;
+    #  Append(latexstring,"]{article}\n");
+    #  Append(latexstring,"\\usepackage[vmargin=2cm,hmargin=2cm]{geometry}\n");
+    #  Append(latexstring,"\\usepackage[x11names, rgb]{xcolor}\n");
+ #  #   Append(latexstring,"\\usepackage[utf8]{inputenc}\n");
+    #  Append(latexstring,"\\usepackage{pgf}\n");
+    #  Append(latexstring,"\\usepackage{tikz}\n");
+    #  Append(latexstring,"\\usepgfmodule{plot}\n");
+    #  Append(latexstring,"\\usepgflibrary{plothandlers}\n");
+    #  Append(latexstring,"\\usetikzlibrary{shapes.geometric}\n");
+    #  Append(latexstring,"\\usetikzlibrary{shadings}\n");
+    #  Append(latexstring,"\\usepackage{amsmath}\n");
+    #  Append(latexstring,"\%\n");
+    #  Append(latexstring,"\\begin{document}\n");
+    #  Append(latexstring,"\\pagestyle{empty}\n");
+    #  Append(latexstring,"\\begin{center}\n");
+    #  Append(latexstring,Concatenation("\\input{",file,"1}\n"));
+    #  Append(latexstring,"\\end{center}\n");
+    #  Append(latexstring,"\\end{document}\n");
+ #      FileString(Concatenation(dir,file,".tex"),latexstring);
+      #note the use of the package "preview"
+      preamble := Concatenation("\\documentclass{minimal}\n",
+                "\\usepackage{amsmath}\n",
+                "\\usepackage[active,tightpage]{preview}\n",
+                "\\setlength\\PreviewBorder{1pt}\n",
+                "\\usepackage{pgf}\n",
+                "\\usepackage{tikz}\n",
+                "\\usepgfmodule{plot}\n",
+                "\\usepgflibrary{plothandlers}\n",
+                "\\usetikzlibrary{shapes.geometric}\n",
+                "\\usetikzlibrary{shadings}\n",
+                "\\begin{document}\n",
+                          "\\begin{preview}\n");
+      closing := "\\end{preview}\n\\end{document}";
+      latexstring := Concatenation(preamble,"\\input{",file,"1}\n",closing);
+      
       FileString(Concatenation(dir,file,".tex"),latexstring);
-
+      
       FileString(Concatenation(dir,file,"1.tex"),dotstring);
     else
 
       FileString(Concatenation(dir,file,".dot"),dotstring);
 
-      command := Concatenation("dot2tex -ftikz ",dir,file,".dot"," > ", dir,file,".tex");
+      command := Concatenation("dot2tex -ftikz ",dir,file,".dot"," > ",
+       dir,file,".tex");
       Exec(command);
     fi;
 
-    command := Concatenation("cd ",dir,"; ","pdflatex ",dir,file, " 2>/dev/null 1>/dev/null");
+    command := Concatenation("cd ",dir,"; ","pdflatex ",dir,file, 
+    " 2>/dev/null 1>/dev/null");
     Exec(command);
 
     Exec (Concatenation(viewer, " ",dir,file,".pdf 2>/dev/null 1>/dev/null &"));

@@ -148,10 +148,10 @@ BindGlobal("VizDefaultOptionsRecordForGraphs",rec(
         highlight := false));
 ########################################################################
 # a record containing the default values
-BindGlobal("VizDefaultOptionsRecordForDisplayingWithLatex",rec(
-        latexpoints := "11pt",
-        orientation := "landscape",
-        papersize := "a4paper"));
+# BindGlobal("VizDefaultOptionsRecordForDisplayingWithLatex",rec(
+#         latexpoints := "11pt",
+#         orientation := "landscape",
+#         papersize := "a4paper"));
 
 ##########################################################################
 
@@ -168,7 +168,9 @@ BindGlobal("VizOptionsForSplash",["path","directory","file","viewer","tikz","fil
     if ARCH_IS_MAC_OS_X( ) then
       BindGlobal("VizViewers", ["xpdf","open","evince", "okular", "gv"]);
     elif ARCH_IS_UNIX( ) then
-      BindGlobal("VizViewers", ["xpdf","xdg-open","evince", "okular", "gv"]);
+#      BindGlobal("VizViewers", ["xpdf","xdg-open","evince", "okular", "gv"]);
+      #"xpdf" is not working properly with ubuntu 12.04 
+      BindGlobal("VizViewers", ["xdg-open","evince", "okular", "gv"]);
     elif ARCH_IS_WINDOWS( ) then
       BindGlobal("VizViewers", ["xpdf","evince", "okular", "gv"]);
     fi;
@@ -181,6 +183,6 @@ if First(VizViewers, v -> Filename(DirectoriesSystemPrograms(),v) <> fail)= fail
   elif Filename(DirectoriesSystemPrograms(),"dot") = fail then
     Info(InfoWarning,1,"GraphViz ( http://www.graphviz.org ) is not installed. Latex will be used to produce images\n");
   fi;
-  if Filename(DirectoriesSystemPrograms(),"dot2tex") = fail then
-    Info(InfoWarning,1,"dot2tex is not installed; graphviz will be used to produce images\n");
-  fi;
+#  if Filename(DirectoriesSystemPrograms(),"dot2tex") = fail then
+#    Info(InfoWarning,1,"dot2tex is not installed; graphviz will be used to produce images\n");
+#  fi;
