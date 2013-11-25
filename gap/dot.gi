@@ -338,7 +338,7 @@ function(digraph)
   for i in [1..Length(digraph)] do
     str_i:=String(i);
     for j in [1..Length(digraph[i])] do
-      Append(str, Concatenation(str_i, " -> ", String(j) , "\n"));
+      Append(str, Concatenation(str_i, " -> ", String(digraph[i][j]) , "\n"));
     od;
   od;
   Append(str,"}\n");
