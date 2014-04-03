@@ -18,7 +18,6 @@ DeclareGlobalFunction("ReuseVizColors");
 # * a record of options (may not be present) and
 # * a string (dot) or a function that applied to the ramaining argument produces a dot string
 # processes and displays
-DeclareGlobalFunction("Splash");
 
 #########################################################################
 # To draw a graph we need to specify:
@@ -165,13 +164,6 @@ BindGlobal("VizOptionsForSplash",["path","directory","file","viewer","tikz","fil
 ## In particular, when the help viwer is capable of reading pdfs, is should be used 
 ## as default.
 #VizViewers := ["xpdf","evince", "okular", "gv"];
-    if ARCH_IS_MAC_OS_X( ) then
-      BindGlobal("VizViewers", ["xpdf","open","evince", "okular", "gv"]);
-    elif ARCH_IS_UNIX( ) then
-      BindGlobal("VizViewers", ["xpdf","xdg-open","evince", "okular", "gv"]);
-    elif ARCH_IS_WINDOWS( ) then
-      BindGlobal("VizViewers", ["xpdf","evince", "okular", "gv"]);
-    fi;
 
 if First(VizViewers, v -> Filename(DirectoriesSystemPrograms(),v) <> fail)= fail then
     Info(InfoWarning,1,"No pdf viewer from the list ", VizViewers, " is installed, thus there will be no output of any image\n");
