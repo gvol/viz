@@ -33,8 +33,7 @@ end);
 # the input is
 # * a record of options (may not be present) and
 # * a string (dot) or a function that applied to the ramaining argument produces a dot string
-
-if not IsBound(Splash) then 
+if not IsBound(VizViewers) then 
   if ARCH_IS_MAC_OS_X( ) then
     BindGlobal("VizViewers", ["xpdf","open","evince", "okular", "gv"]);
   elif ARCH_IS_UNIX( ) then
@@ -42,7 +41,9 @@ if not IsBound(Splash) then
   elif ARCH_IS_WINDOWS( ) then
     BindGlobal("VizViewers", ["xpdf","evince", "okular", "gv"]);
   fi;
+fi;
 
+if not IsBound(Splash) then 
   BindGlobal("Splash",
   function(arg)
     local opt, dotstring, f, s, path, dir, tdir, file, viewer, tikz, filetype, i, 

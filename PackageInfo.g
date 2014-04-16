@@ -106,7 +106,7 @@ PackageDoc := rec(
 Dependencies := rec(
  GAP := ">=4.5",
  NeededOtherPackages := [["GAPDoc", ">=1.4"]],
- SuggestedOtherPackages := [["citrus", ">=0.9"] ],
+ SuggestedOtherPackages := [["orb", "4.5"] ],
  ExternalConditions := [],
 ),
 
