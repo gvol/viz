@@ -47,7 +47,7 @@ InstallOtherMethod(DotCayleyGraph, "for a semigroup with generators",
     edges := Concatenation(List(gen_colors, y ->
                      List(S, x->[x,y[1],x*y[1],y[2]])));
 
-    dotstring := "digraph CayleyGraph {\n";
+    dotstring := "//dot\ndigraph CayleyGraph {\n";
 
     for edge in edges do
      Append(dotstring,Concatenation("\"", String(edge[1]), "\"->\"",
@@ -88,7 +88,7 @@ function(arg)
   size := Size(S);
   if size = 1 then
     Info(InfoViz,1,"The semigroup is trivial...");
-    dotstring := "/*dot*/ \n digraph CayleyGraph {\n  0 };\n";
+    dotstring := "//dot\n digraph CayleyGraph {\n  0 };\n";
     return dotstring;
   fi;
   elts := Elements(S);
@@ -205,7 +205,7 @@ function(arg)
                                edge_labels[Position(gens,y[1])],
                              Position(elts,x*y[1]),y[2]])));
   fi;
-  dotstring := "/*dot*/ \n digraph CayleyGraph {\n";
+  dotstring := "//dot\n\n digraph CayleyGraph {\n";
   if IsBound(opt.rankdir) then #by default, this attribut of dot is "TB"
     Append(dotstring,Concatenation("rankdir = ",opt.rankdir,";\n"));
   fi;
@@ -286,7 +286,7 @@ if not TestPackageAvailability("orb", "3.7")=fail then
 
     gens := GeneratorsOfSemigroup(s);
     str:="";
-    Append(str, "digraph aut{\n");
+    Append(str, "//dot\ndigraph aut{\n");
     Append(str, "node [shape=circle]");
     Append(str, "edge [len=1.2]");
     ht:=HTCreate("1 -> 2");
@@ -332,7 +332,7 @@ function(digraph)
 
   str:="";
 
-  Append(str,"digraph hgn{\n");
+  Append(str,"//dot\ndigraph hgn{\n");
   Append(str,"node [shape=circle]\n");
 
   for i in [1..Length(digraph)] do
@@ -358,7 +358,7 @@ function(digraph)
 
   str:="";
 
-  Append(str,"digraph hgn{\n");
+  Append(str,"//dot\ndigraph hgn{\n");
   Append(str,"node [shape=circle]\n");
 
   for i in [1..Length(digraph)] do
@@ -383,7 +383,7 @@ function(g)
 
   str:="";
 
-  Append(str,  "graph {\n     node [shape=point]\n");
+  Append(str,  "//dot\ngraph {\n     node [shape=point]\n");
   seen:=List([1..Length(g)], x-> []);
 
   for i in [1..Length(g)] do
@@ -416,9 +416,9 @@ function(arg)
   str:="";
 
   if Length(arg[1])<40 then
-    Append(str,  "graph graphname {\n     node [shape=circle]\n");
+    Append(str,  "//dot\ngraph graphname {\n     node [shape=circle]\n");
   else
-    Append(str,  "graph graphname {\n     node [shape=point]\n");
+    Append(str,  "//dot\ngraph graphname {\n     node [shape=point]\n");
   fi;
 
   if IsBound(arg[2]) and IsRecord(arg[2]) and "highlight" in RecNames(arg[2])
