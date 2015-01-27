@@ -14,11 +14,11 @@ PackageName := "viz",
 
 Subtitle := "viz",
 
-Version := "0.2.6",
+Version := "0.2.7",
 
-Date := "24/07/2012",
+Date := "27/01/2015",
 
-ArchiveURL := "http://bitbucket.org/zen154115/viz",
+ArchiveURL := "http://bitbucket.org/james-d-mitchell/viz",
 
 ArchiveFormats := ".tar.gz",
 
@@ -106,7 +106,8 @@ PackageDoc := rec(
 Dependencies := rec(
  GAP := ">=4.5",
  NeededOtherPackages := [["GAPDoc", ">=1.4"]],
- SuggestedOtherPackages := [["orb", "4.5"] ],
+ SuggestedOtherPackages := [["orb", "4.5"],
+                            ["graphs","0.1"]],
  ExternalConditions := [],
 ),
 

@@ -326,24 +326,24 @@ fi;
 
 # AN's code
 
-InstallGlobalFunction(DotDigraph,
-function(digraph)
-  local str, str_i, i, j;
+# InstallGlobalFunction(DotDigraph,
+# function(digraph)
+#   local str, str_i, i, j;
 
-  str:="";
+#   str:="";
 
-  Append(str,"//dot\ndigraph hgn{\n");
-  Append(str,"node [shape=circle]\n");
+#   Append(str,"//dot\ndigraph hgn{\n");
+#   Append(str,"node [shape=circle]\n");
 
-  for i in [1..Length(digraph)] do
-    str_i:=String(i);
-    for j in [1..Length(digraph[i])] do
-      Append(str, Concatenation(str_i, " -> ", String(digraph[i][j]) , "\n"));
-    od;
-  od;
-  Append(str,"}\n");
-  return str;
-end);
+#   for i in [1..Length(digraph)] do
+#     str_i:=String(i);
+#     for j in [1..Length(digraph[i])] do
+#       Append(str, Concatenation(str_i, " -> ", String(digraph[i][j]) , "\n"));
+#     od;
+#   od;
+#   Append(str,"}\n");
+#   return str;
+# end);
 
 # Usage: a list of adjacencies of a functional directed graph (as pos. ints).
 # For example, [1,2,3,3,4] indicates that 1->1, 2->2, 3->3, 4->3, 5->5.
